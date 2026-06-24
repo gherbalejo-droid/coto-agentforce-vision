@@ -1,0 +1,2758 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>COTO × Agentforce — La Capa Agéntica</title>
+  <style>
+    :root {
+      --coto-red: #E3001B;
+      --coto-dark: #1A0004;
+      --sf-blue: #0176D3;
+      --sf-light: #032D60;
+      --accent: #FFCC00;
+      --green: #0D8A65;
+      --gold: #D4820A;
+      --purple: #6B1735;
+      --teal: #E07B1A;
+      --bg: #FBF3F3;
+      --card: #ffffff;
+      --text: #1A1A1A;
+      --muted: #64748b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ─── HERO ─────────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, var(--coto-dark) 0%, #8B0010 60%, var(--coto-red) 100%);
+      color: white;
+      padding: 80px 40px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 40%, rgba(227,0,27,0.25) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 60%, rgba(255,204,0,0.08) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 50px;
+      padding: 6px 18px;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .hero h1 span { color: var(--accent); }
+
+    .hero-coto-logo {
+      height: 0.78em;
+      width: auto;
+      vertical-align: middle;
+      display: inline-block;
+      margin-left: 6px;
+      border-radius: 4px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+    }
+
+    .badge-coto-logo {
+      height: 15px;
+      width: auto;
+      vertical-align: middle;
+      margin: 0 3px;
+      border-radius: 3px;
+    }
+
+    .hero-sub {
+      font-size: 1.2rem;
+      opacity: 0.8;
+      margin-bottom: 40px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-metrics {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 24px;
+      margin-top: 40px;
+    }
+
+    .hero-metric {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 16px;
+      padding: 20px 28px;
+      min-width: 160px;
+    }
+
+    .hero-metric .num {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      display: block;
+    }
+
+    .hero-metric .label {
+      font-size: 0.78rem;
+      opacity: 0.75;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* ─── SPEECH ────────────────────────────────────────────── */
+    .speech-section {
+      background: linear-gradient(135deg, #3D0008 0%, #8B0010 100%);
+      color: white;
+      padding: 60px 40px;
+    }
+
+    .speech-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .speech-inner p {
+      font-size: 1.15rem;
+      line-height: 1.9;
+      opacity: 0.9;
+      font-style: italic;
+      margin-bottom: 16px;
+    }
+
+    .speech-inner p strong {
+      color: var(--accent);
+      font-style: normal;
+    }
+
+    .speech-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+
+    /* ─── SECTION WRAPPER ───────────────────────────────────── */
+    .section {
+      padding: 64px 40px;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 40px;
+    }
+
+    .section-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .section-header h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    .section-header p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-top: 2px;
+    }
+
+    /* ─── CATEGORY CARDS ────────────────────────────────────── */
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 24px;
+    }
+
+    .cat-card {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+      border-left: 5px solid var(--color);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .cat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+    }
+
+    .cat-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .cat-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .cat-title { font-size: 1.05rem; font-weight: 700; }
+    .cat-subtitle { font-size: 0.8rem; color: var(--muted); }
+
+    .use-case-list { list-style: none; }
+
+    .use-case-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 0.9rem;
+    }
+
+    .use-case-list li:last-child { border-bottom: none; }
+
+    .uc-num {
+      background: var(--color);
+      color: white;
+      border-radius: 6px;
+      padding: 1px 7px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .uc-name { font-weight: 600; }
+    .uc-kpi { color: var(--muted); font-size: 0.82rem; margin-top: 2px; }
+    .uc-desc { display: none; }
+
+    .cat-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 18px;
+    }
+
+    .tag {
+      background: var(--color-light);
+      color: var(--color);
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* ─── METRICS GRID ──────────────────────────────────────── */
+    .metrics-bg {
+      background: white;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 16px;
+    }
+
+    .metric-card {
+      background: var(--bg);
+      border-radius: 16px;
+      padding: 18px 12px;
+      text-align: center;
+      border-top: 4px solid var(--color);
+    }
+
+    .metric-card .big {
+      font-size: clamp(1.4rem, 2vw, 2rem);
+      font-weight: 800;
+      color: var(--color);
+      display: block;
+      line-height: 1;
+      margin-bottom: 6px;
+      white-space: nowrap;
+    }
+
+    .metric-card .desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .metric-card .source {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      margin-top: 8px;
+    }
+
+    /* ─── ROADMAP ───────────────────────────────────────────── */
+    .roadmap-bg { background: #FDF8F8; }
+
+    .roadmap-track {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+    }
+
+    .roadmap-track::before {
+      content: '';
+      position: absolute;
+      top: 32px;
+      left: 12%;
+      right: 12%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--coto-red), var(--gold));
+      border-radius: 2px;
+      z-index: 0;
+    }
+
+    .phase {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 0 12px;
+    }
+
+    .phase-dot {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--color);
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: white;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      border: 4px solid white;
+    }
+
+    .phase-period {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--color);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .phase-name {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .phase-card {
+      background: white;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      border-top: 3px solid var(--color);
+      text-align: left;
+    }
+
+    .phase-kpi {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--color);
+      margin-bottom: 10px;
+    }
+
+    .phase-use-cases { font-size: 0.8rem; color: var(--muted); line-height: 1.7; }
+
+    .phase-inv {
+      display: inline-block;
+      margin-top: 10px;
+      background: var(--color-light);
+      color: var(--color);
+      border-radius: 20px;
+      padding: 2px 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* ─── ARCHITECTURE ──────────────────────────────────────── */
+    .arch-bg { background: linear-gradient(135deg, #1A0004, #6B0010); color: white; }
+
+    .arch-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .arch-layer {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 28px 24px;
+      backdrop-filter: blur(10px);
+    }
+
+    .arch-layer-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .arch-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .arch-item:last-child { margin-bottom: 0; }
+
+    .arch-bullet {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-top: 7px;
+      flex-shrink: 0;
+    }
+
+    .arch-item-name { font-weight: 700; font-size: 0.9rem; }
+    .arch-item-desc { font-size: 0.8rem; opacity: 0.65; }
+
+    /* ─── FOOTER ────────────────────────────────────────────── */
+    footer {
+      background: var(--coto-dark);
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 28px;
+      font-size: 0.8rem;
+    }
+
+    footer strong { color: white; }
+
+    /* ─── RESPONSIVE ────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .roadmap-track {
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+      }
+      .roadmap-track::before { display: none; }
+      .arch-grid { grid-template-columns: 1fr; }
+      .category-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .section { padding: 40px 20px; }
+      .hero { padding: 50px 20px 40px; }
+      .roadmap-track { grid-template-columns: 1fr; }
+      .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════ HERO ══════ -->
+<section class="hero">
+  <div class="hero-badge">🛒 <img src="https://www.coto.com.ar/images/logocotogde.png" alt="COTO" class="badge-coto-logo"> × Salesforce Agentforce</div>
+  <h1>La Capa <span>Agéntica</span> de <img src="https://www.coto.com.ar/images/logocotogde.png" alt="COTO" class="hero-coto-logo"></h1>
+  <p class="hero-sub">El sistema nervioso inteligente que convierte datos en acciones y acciones en resultados de negocio medibles.</p>
+
+  <div class="hero-metrics">
+    <div class="hero-metric">
+      <span class="num">3.5x</span>
+      <span class="label">ROI promedio a 12 meses</span>
+    </div>
+    <div class="hero-metric">
+      <span class="num">-40%</span>
+      <span class="label">Casos al contact center</span>
+    </div>
+    <div class="hero-metric">
+      <span class="num">+25%</span>
+      <span class="label">Conversión eCommerce</span>
+    </div>
+    <div class="hero-metric">
+      <span class="num">70%</span>
+      <span class="label">Contención digital</span>
+    </div>
+    <div class="hero-metric">
+      <span class="num">+20</span>
+      <span class="label">Puntos de NPS</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ SPEECH ══════ -->
+<section class="speech-section">
+  <div class="speech-inner">
+    <div class="speech-title">🎯 Visión Agéntica</div>
+    <p>"COTO ya demostró que los agentes funcionan con FAQ y Where is My Order. La pregunta ahora es: <strong>¿cómo pasamos de contener consultas a generar valor de negocio real?</strong>"</p>
+    <p>"Agentforce no es una nueva herramienta en el stack — es la capa que unifica todo lo que ya tienen: <strong>Service Cloud, los datos transaccionales de millones de compradores</strong> y los canales donde los clientes ya están (WhatsApp, la app, la web)."</p>
+    <p>"El resultado: más conversión, menos costo de servir, y una experiencia que hace que los clientes vuelvan a COTO — <strong>no por precio, sino porque se sienten entendidos.</strong>"</p>
+  </div>
+</section>
+
+<!-- ══════ MÉTRICAS ══════ -->
+<div class="metrics-bg">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-dot" style="background:#E3001B"></div>
+      <div>
+        <h2>Métricas de Impacto de Referencia</h2>
+        <p>Benchmarks del sector Retail &amp; Agentforce</p>
+      </div>
+    </div>
+    <div class="metrics-grid">
+      <div class="metric-card" style="--color:#E3001B;--color-light:#FCEAEA">
+        <span class="big">30–40%</span>
+        <span class="desc">Reducción de casos al contact center</span>
+        <div class="source">Salesforce Retail ROI Study</div>
+      </div>
+      <div class="metric-card" style="--color:#E07B1A;--color-light:#FEF2E6">
+        <span class="big">15–25%</span>
+        <span class="desc">Aumento de conversión con agente en carrito abandonado</span>
+        <div class="source">Industry Benchmark</div>
+      </div>
+      <div class="metric-card" style="--color:#D4820A;--color-light:#FEF3E0">
+        <span class="big">10–18%</span>
+        <span class="desc">Incremento de ticket promedio con recomendaciones IA</span>
+        <div class="source">Einstein Personalization</div>
+      </div>
+      <div class="metric-card" style="--color:#6B1735;--color-light:#F5E6EC">
+        <span class="big">35%</span>
+        <span class="desc">Reducción de tiempo de resolución de casos</span>
+        <div class="source">Salesforce Service ROI</div>
+      </div>
+      <div class="metric-card" style="--color:#0D8A65;--color-light:#E0F5EE">
+        <span class="big">70%</span>
+        <span class="desc">Tasa de contención en canales digitales (WhatsApp + Web)</span>
+        <div class="source">Agentforce WhatsApp deployments</div>
+      </div>
+      <div class="metric-card" style="--color:#E3001B;--color-light:#FCEAEA">
+        <span class="big">+20 pts</span>
+        <span class="desc">NPS post-interacción con agente</span>
+        <div class="source">Salesforce CX Benchmark</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ CATEGORÍAS ══════ -->
+<div style="background:#FBF3F3">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-dot" style="background:#E3001B"></div>
+      <div>
+        <h2>Portfolio de Casos de Uso</h2>
+        <p>6 categorías · 30+ casos de uso listos para implementar</p>
+      </div>
+    </div>
+    <div class="category-grid">
+
+      <!-- Cat 1 -->
+      <div class="cat-card" style="--color:#E3001B;--color-light:#FCEAEA">
+        <div class="cat-header">
+          <div class="cat-icon" style="--color:#E3001B">🎧</div>
+          <div>
+            <div class="cat-title">Servicio al Cliente</div>
+            <div class="cat-subtitle">Evolución de lo ya desplegado</div>
+          </div>
+        </div>
+        <p style="font-size:0.75rem;color:#94a3b8;margin-bottom:8px;">💡 Doble clic en cada caso para simular la interacción</p>
+        <ul class="use-case-list">
+          <li data-ucid="1.1" class="uc-interactive">
+            <span class="uc-num" style="background:#E3001B">1.1</span>
+            <div>
+              <div class="uc-name">FAQ Avanzado con Contexto</div>
+              <div class="uc-kpi">Respuestas personalizadas según historial del cliente</div>
+              <div class="uc-desc">El agente no solo responde preguntas genéricas, sino que personaliza la respuesta según el historial del cliente: últimas compras, suscripciones activas y sucursal más cercana.</div>
+            </div>
+          </li>
+          <li data-ucid="1.2" class="uc-interactive">
+            <span class="uc-num" style="background:#E3001B">1.2</span>
+            <div>
+              <div class="uc-name">Where is My Order 2.0</div>
+              <div class="uc-kpi">Reembolsos automáticos + reprogramación de entregas</div>
+              <div class="uc-desc">El agente ya disponible evoluciona: emite reembolsos automáticos por demoras, reprograma entregas y escala proactivamente a un agente humano si detecta frustración.</div>
+            </div>
+          </li>
+          <li data-ucid="1.3" class="uc-interactive">
+            <span class="uc-num" style="background:#E3001B">1.3</span>
+            <div>
+              <div class="uc-name">Resolución Autónoma de Reclamos</div>
+              <div class="uc-kpi">Devoluciones y créditos sin intervención humana</div>
+              <div class="uc-desc">El agente evalúa el reclamo, verifica el historial de compra y aprueba la devolución o crédito en cuenta automáticamente, sin intervención humana, para casos de bajo riesgo.</div>
+            </div>
+          </li>
+          <li data-ucid="1.4" class="uc-interactive">
+            <span class="uc-num" style="background:#E3001B">1.4</span>
+            <div>
+              <div class="uc-name">Escalado Inteligente a Agente Humano</div>
+              <div class="uc-kpi">Detección de emoción negativa · AHT -35%</div>
+              <div class="uc-desc">El agente detecta frustración, enojo o consultas complejas y transfiere al agente humano en Service Cloud con el contexto completo de la conversación, reduciendo el tiempo de resolución en un 35%.</div>
+            </div>
+          </li>
+          <li data-ucid="1.5" class="uc-interactive">
+            <span class="uc-num" style="background:#E3001B">1.5</span>
+            <div>
+              <div class="uc-name">Gestión de Devoluciones y Cambios</div>
+              <div class="uc-kpi">Proceso end-to-end automatizado</div>
+              <div class="uc-desc">Verificación de elegibilidad, generación de etiqueta de devolución y acreditación de reembolso o cambio de producto — todo sin intervención humana.</div>
+            </div>
+          </li>
+        </ul>
+        <div class="cat-tags">
+          <span class="tag" style="--color:#E3001B;--color-light:#FCEAEA">Web</span>
+          <span class="tag" style="--color:#E3001B;--color-light:#FCEAEA">App</span>
+          <span class="tag" style="--color:#E3001B;--color-light:#FCEAEA">WhatsApp</span>
+          <span class="tag" style="--color:#E3001B;--color-light:#FCEAEA">Service Cloud</span>
+        </div>
+      </div>
+
+      <!-- Cat 2 -->
+      <div class="cat-card" style="--color:#E07B1A;--color-light:#FEF2E6">
+        <div class="cat-header">
+          <div class="cat-icon" style="background:#E07B1A">🛒</div>
+          <div>
+            <div class="cat-title">Conversión y eCommerce</div>
+            <div class="cat-subtitle">Aumentar revenue digital</div>
+          </div>
+        </div>
+        <p style="font-size:0.75rem;color:#94a3b8;margin-bottom:8px;">💡 Doble clic en cada caso para simular la interacción</p>
+        <ul class="use-case-list">
+          <li data-ucid="2.1" class="uc-interactive">
+            <span class="uc-num" style="background:#E07B1A">2.1</span>
+            <div>
+              <div class="uc-name">Rescate de Carrito Abandonado</div>
+              <div class="uc-kpi">+15–25% conversión · WhatsApp + Email + App</div>
+            </div>
+          </li>
+          <li data-ucid="2.2" class="uc-interactive">
+            <span class="uc-num" style="background:#E07B1A">2.2</span>
+            <div>
+              <div class="uc-name">Asistente de Compra Personalizado</div>
+              <div class="uc-kpi">Recomendaciones según historial y stock en sucursal</div>
+            </div>
+          </li>
+          <li data-ucid="2.3" class="uc-interactive">
+            <span class="uc-num" style="background:#E07B1A">2.3</span>
+            <div>
+              <div class="uc-name">Cross-selling Inteligente</div>
+              <div class="uc-kpi">+10–18% ticket promedio (AOV)</div>
+            </div>
+          </li>
+          <li data-ucid="2.4" class="uc-interactive">
+            <span class="uc-num" style="background:#E07B1A">2.4</span>
+            <div>
+              <div class="uc-name">Upsell de Suscripción COTO Club</div>
+              <div class="uc-kpi">Activación de clientes de alto valor sin membresía</div>
+            </div>
+          </li>
+          <li data-ucid="2.5" class="uc-interactive">
+            <span class="uc-num" style="background:#E07B1A">2.5</span>
+            <div>
+              <div class="uc-name">Disponibilidad y Reserva de Stock</div>
+              <div class="uc-kpi">Redireccionamiento a sucursales + alertas de reposición</div>
+            </div>
+          </li>
+          <li data-ucid="2.6" class="uc-interactive">
+            <span class="uc-num" style="background:#E07B1A">2.6</span>
+            <div>
+              <div class="uc-name">Asistente de Lista de Compras</div>
+              <div class="uc-kpi">Lista semanal automática según patrón de consumo</div>
+            </div>
+          </li>
+        </ul>
+        <div class="cat-tags">
+          <span class="tag" style="--color:#E07B1A;--color-light:#FEF2E6">Einstein Recommendations</span>
+          <span class="tag" style="--color:#E07B1A;--color-light:#FEF2E6">Data Cloud</span>
+          <span class="tag" style="--color:#E07B1A;--color-light:#FEF2E6">Commerce Cloud</span>
+        </div>
+      </div>
+
+      <!-- Cat 3 -->
+      <div class="cat-card" style="--color:#D4820A;--color-light:#FEF3E0">
+        <div class="cat-header">
+          <div class="cat-icon" style="background:#D4820A">📣</div>
+          <div>
+            <div class="cat-title">Marketing Segmentado</div>
+            <div class="cat-subtitle">Campañas agénticas 1-to-1</div>
+          </div>
+        </div>
+        <p style="font-size:0.75rem;color:#94a3b8;margin-bottom:8px;">💡 Doble clic en cada caso para simular la interacción</p>
+        <ul class="use-case-list">
+          <li data-ucid="3.1" class="uc-interactive">
+            <span class="uc-num" style="background:#D4820A">3.1</span>
+            <div>
+              <div class="uc-name">Campaña 1-to-1 por Segmento</div>
+              <div class="uc-kpi">Mensaje, producto y canal personalizado por perfil</div>
+            </div>
+          </li>
+          <li data-ucid="3.2" class="uc-interactive">
+            <span class="uc-num" style="background:#D4820A">3.2</span>
+            <div>
+              <div class="uc-name">Oferta Contextual en Tiempo Real</div>
+              <div class="uc-kpi">Geofencing en sucursales + historial de compra</div>
+            </div>
+          </li>
+          <li data-ucid="3.3" class="uc-interactive">
+            <span class="uc-num" style="background:#D4820A">3.3</span>
+            <div>
+              <div class="uc-name">Reactivación de Clientes Inactivos</div>
+              <div class="uc-kpi">Score de propensión · 30/60/90 días sin compra</div>
+            </div>
+          </li>
+          <li data-ucid="3.4" class="uc-interactive">
+            <span class="uc-num" style="background:#D4820A">3.4</span>
+            <div>
+              <div class="uc-name">Campaña de Fechas Clave</div>
+              <div class="uc-kpi">Cumpleaños, aniversario y temporadas personalizados</div>
+            </div>
+          </li>
+          <li data-ucid="3.5" class="uc-interactive">
+            <span class="uc-num" style="background:#D4820A">3.5</span>
+            <div>
+              <div class="uc-name">NPS Post-Compra con Acción Inmediata</div>
+              <div class="uc-kpi">Crédito de goodwill automático si detecta insatisfacción</div>
+            </div>
+          </li>
+          <li data-ucid="3.6" class="uc-interactive">
+            <span class="uc-num" style="background:#D4820A">3.6</span>
+            <div>
+              <div class="uc-name">Programa de Fidelización Proactivo</div>
+              <div class="uc-kpi">Notificación de puntos a vencer + beneficios no usados</div>
+            </div>
+          </li>
+        </ul>
+        <div class="cat-tags">
+          <span class="tag" style="--color:#D4820A;--color-light:#FEF3E0">Journey Decisioning</span>
+          <span class="tag" style="--color:#D4820A;--color-light:#FEF3E0">Marketing Cloud</span>
+          <span class="tag" style="--color:#D4820A;--color-light:#FEF3E0">Data Cloud</span>
+        </div>
+      </div>
+
+      <!-- Cat 4 -->
+      <div class="cat-card" style="--color:#0176D3;--color-light:#E0EEFF">
+        <div class="cat-header">
+          <div class="cat-icon" style="background:#0176D3">💰</div>
+          <div>
+            <div class="cat-title">Reducción del Costo de Servir</div>
+            <div class="cat-subtitle">Service Cloud — eficiencia operativa</div>
+          </div>
+        </div>
+        <p style="font-size:0.75rem;color:#94a3b8;margin-bottom:8px;">💡 Doble clic en cada caso para simular la interacción</p>
+        <ul class="use-case-list">
+          <li data-ucid="4.1" class="uc-interactive">
+            <span class="uc-num" style="background:#0176D3">4.1</span>
+            <div>
+              <div class="uc-name">Deflexión Inteligente de Llamadas</div>
+              <div class="uc-kpi">Meta: 30–40% deflexión · Voz + IVR + WhatsApp</div>
+            </div>
+          </li>
+          <li data-ucid="4.2" class="uc-interactive">
+            <span class="uc-num" style="background:#0176D3">4.2</span>
+            <div>
+              <div class="uc-name">Auto-resolución de Casos Tier 1</div>
+              <div class="uc-kpi">Reembolso menor, queja de producto, consulta factura</div>
+            </div>
+          </li>
+          <li data-ucid="4.3" class="uc-interactive">
+            <span class="uc-num" style="background:#0176D3">4.3</span>
+            <div>
+              <div class="uc-name">Resumen Automático de Caso</div>
+              <div class="uc-kpi">Ahorra 3–5 min por caso · historial + acciones recomendadas</div>
+            </div>
+          </li>
+          <li data-ucid="4.4" class="uc-interactive">
+            <span class="uc-num" style="background:#0176D3">4.4</span>
+            <div>
+              <div class="uc-name">Clasificación y Ruteo Automático</div>
+              <div class="uc-kpi">FRT -40% · asignación al agente más adecuado</div>
+            </div>
+          </li>
+          <li data-ucid="4.5" class="uc-interactive">
+            <span class="uc-num" style="background:#0176D3">4.5</span>
+            <div>
+              <div class="uc-name">Base de Conocimiento Agéntica</div>
+              <div class="uc-kpi">Copiloto para agentes humanos en tiempo real</div>
+            </div>
+          </li>
+          <li data-ucid="4.6" class="uc-interactive">
+            <span class="uc-num" style="background:#0176D3">4.6</span>
+            <div>
+              <div class="uc-name">Seguimiento Proactivo de Entrega</div>
+              <div class="uc-kpi">Notifica al cliente antes de que reclame · crédito de compensación</div>
+            </div>
+          </li>
+        </ul>
+        <div class="cat-tags">
+          <span class="tag" style="--color:#0176D3;--color-light:#E0EEFF">Service Cloud</span>
+          <span class="tag" style="--color:#0176D3;--color-light:#E0EEFF">Einstein</span>
+          <span class="tag" style="--color:#0176D3;--color-light:#E0EEFF">IVR</span>
+        </div>
+      </div>
+
+      <!-- Cat 5 -->
+      <div class="cat-card" style="--color:#0D8A65;--color-light:#E0F5EE">
+        <div class="cat-header">
+          <div class="cat-icon" style="background:#0D8A65">💬</div>
+          <div>
+            <div class="cat-title">WhatsApp, Voz y Canales Conversacionales</div>
+            <div class="cat-subtitle">Donde viven los clientes</div>
+          </div>
+        </div>
+        <p style="font-size:0.75rem;color:#94a3b8;margin-bottom:8px;">💡 Doble clic en cada caso para simular la interacción</p>
+        <ul class="use-case-list">
+          <li data-ucid="5.1" class="uc-interactive">
+            <span class="uc-num" style="background:#0D8A65">5.1</span>
+            <div>
+              <div class="uc-name">Agente de Voz para Contact Center</div>
+              <div class="uc-kpi">Meta: 40% contención · entonación natural</div>
+            </div>
+          </li>
+          <li data-ucid="5.2" class="uc-interactive">
+            <span class="uc-num" style="background:#0D8A65">5.2</span>
+            <div>
+              <div class="uc-name">WhatsApp Commerce — Compra Conversacional</div>
+              <div class="uc-kpi">Compra completa dentro del chat sin salir de la app</div>
+            </div>
+          </li>
+          <li data-ucid="5.3" class="uc-interactive">
+            <span class="uc-num" style="background:#0D8A65">5.3</span>
+            <div>
+              <div class="uc-name">Agente de Voz Outbound para Campañas</div>
+              <div class="uc-kpi">Re-engagement y ventas con oferta personalizada</div>
+            </div>
+          </li>
+          <li data-ucid="5.4" class="uc-interactive">
+            <span class="uc-num" style="background:#0D8A65">5.4</span>
+            <div>
+              <div class="uc-name">WhatsApp para Resolución de Reclamos</div>
+              <div class="uc-kpi">Foto del producto → reembolso en menos de 2 min (Einstein Vision)</div>
+            </div>
+          </li>
+          <li data-ucid="5.5" class="uc-interactive">
+            <span class="uc-num" style="background:#0D8A65">5.5</span>
+            <div>
+              <div class="uc-name">Confirmación y Cambio de Turno de Entrega</div>
+              <div class="uc-kpi">Reprogramación con un solo mensaje · sin llamar al CC</div>
+            </div>
+          </li>
+          <li data-ucid="5.6" class="uc-interactive">
+            <span class="uc-num" style="background:#0D8A65">5.6</span>
+            <div>
+              <div class="uc-name">Programa de Lealtad por Voz</div>
+              <div class="uc-kpi">Consulta y canje de puntos en la llamada</div>
+            </div>
+          </li>
+        </ul>
+        <div class="cat-tags">
+          <span class="tag" style="--color:#0D8A65;--color-light:#E0F5EE">Agentforce Voice</span>
+          <span class="tag" style="--color:#0D8A65;--color-light:#E0F5EE">Two-Way Messaging</span>
+          <span class="tag" style="--color:#0D8A65;--color-light:#E0F5EE">Einstein Vision</span>
+        </div>
+      </div>
+
+      <!-- Cat 6 -->
+      <div class="cat-card" style="--color:#6B1735;--color-light:#F5E6EC">
+        <div class="cat-header">
+          <div class="cat-icon" style="background:#6B1735">👥</div>
+          <div>
+            <div class="cat-title">Employee Agents</div>
+            <div class="cat-subtitle">Colaboradores de COTO empoderados</div>
+          </div>
+        </div>
+        <p style="font-size:0.75rem;color:#94a3b8;margin-bottom:8px;">💡 Doble clic en cada caso para simular la interacción</p>
+        <ul class="use-case-list">
+          <li data-ucid="6.1" class="uc-interactive">
+            <span class="uc-num" style="background:#6B1735">6.1</span>
+            <div>
+              <div class="uc-name">Copiloto para Cajeros y Personal de Piso</div>
+              <div class="uc-kpi">Stock, precios y promos en tiempo real desde handheld</div>
+            </div>
+          </li>
+          <li data-ucid="6.2" class="uc-interactive">
+            <span class="uc-num" style="background:#6B1735">6.2</span>
+            <div>
+              <div class="uc-name">Agente de Onboarding de Nuevos Empleados</div>
+              <div class="uc-kpi">Guía 24/7 por WhatsApp · documentación y capacitaciones</div>
+            </div>
+          </li>
+          <li data-ucid="6.3" class="uc-interactive">
+            <span class="uc-num" style="background:#6B1735">6.3</span>
+            <div>
+              <div class="uc-name">Asistente para Supervisores de Sucursal</div>
+              <div class="uc-kpi">Resumen diario automático · ahorra 30 min de gestión manual</div>
+            </div>
+          </li>
+          <li data-ucid="6.4" class="uc-interactive">
+            <span class="uc-num" style="background:#6B1735">6.4</span>
+            <div>
+              <div class="uc-name">Gestión de Inventario Predictiva</div>
+              <div class="uc-kpi">Detección proactiva de quiebre de stock + orden de reposición</div>
+            </div>
+          </li>
+          <li data-ucid="6.5" class="uc-interactive">
+            <span class="uc-num" style="background:#6B1735">6.5</span>
+            <div>
+              <div class="uc-name">Copiloto para Equipo de Marketing</div>
+              <div class="uc-kpi">Segmentación + borradores de campañas · time-to-launch -60%</div>
+            </div>
+          </li>
+          <li data-ucid="6.6" class="uc-interactive">
+            <span class="uc-num" style="background:#6B1735">6.6</span>
+            <div>
+              <div class="uc-name">HR Self-Service Agent</div>
+              <div class="uc-kpi">Consultas de RRHH 24/7 · carga operativa HR -40%</div>
+            </div>
+          </li>
+        </ul>
+        <div class="cat-tags">
+          <span class="tag" style="--color:#6B1735;--color-light:#F5E6EC">Employee Agent</span>
+          <span class="tag" style="--color:#6B1735;--color-light:#F5E6EC">Slack AI</span>
+          <span class="tag" style="--color:#6B1735;--color-light:#F5E6EC">Data Cloud</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════ ROADMAP ══════ -->
+<div class="roadmap-bg">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-dot" style="background:#D4820A"></div>
+      <div>
+        <h2>Roadmap de Implementación</h2>
+        <p>4 fases · Q3 2026 → Q2 2027</p>
+      </div>
+    </div>
+    <div class="roadmap-track">
+
+      <div class="phase" style="--color:#E3001B;--color-light:#FCEAEA">
+        <div class="phase-dot" style="background:#E3001B">🚀</div>
+        <div class="phase-period">Q3 2026</div>
+        <div class="phase-name">Fase 1 — Evolución</div>
+        <div class="phase-card" style="border-top-color:#E3001B">
+          <div class="phase-kpi">KPI: -30% casos al contact center</div>
+          <div class="phase-use-cases">
+            · FAQ 2.0 con contexto<br>
+            · WIMO 2.0<br>
+            · Resolución autónoma de reclamos<br>
+            · Deflexión de llamadas
+          </div>
+          <span class="phase-inv" style="--color:#E3001B;--color-light:#FCEAEA">Inversión: Media</span>
+        </div>
+      </div>
+
+      <div class="phase" style="--color:#E07B1A;--color-light:#FEF2E6">
+        <div class="phase-dot" style="background:#E07B1A">💹</div>
+        <div class="phase-period">Q4 2026</div>
+        <div class="phase-name">Fase 2 — Conversión</div>
+        <div class="phase-card" style="border-top-color:#E07B1A">
+          <div class="phase-kpi">KPI: +15% eCommerce, +12% ticket</div>
+          <div class="phase-use-cases">
+            · Rescate de carrito abandonado<br>
+            · Cross-selling inteligente<br>
+            · Campaña 1-to-1<br>
+            · WhatsApp Commerce
+          </div>
+          <span class="phase-inv" style="--color:#E07B1A;--color-light:#FEF2E6">Inversión: Media-Alta</span>
+        </div>
+      </div>
+
+      <div class="phase" style="--color:#D4820A;--color-light:#FEF3E0">
+        <div class="phase-dot" style="background:#D4820A">📡</div>
+        <div class="phase-period">Q1 2027</div>
+        <div class="phase-name">Fase 3 — Canales Nuevos</div>
+        <div class="phase-card" style="border-top-color:#D4820A">
+          <div class="phase-kpi">KPI: 40% contención voz, +20 NPS</div>
+          <div class="phase-use-cases">
+            · Agente de Voz<br>
+            · WhatsApp proactivo<br>
+            · Reactivación de inactivos<br>
+            · NPS agéntico
+          </div>
+          <span class="phase-inv" style="--color:#D4820A;--color-light:#FEF3E0">Inversión: Alta</span>
+        </div>
+      </div>
+
+      <div class="phase" style="--color:#6B1735;--color-light:#F5E6EC">
+        <div class="phase-dot" style="background:#6B1735">👥</div>
+        <div class="phase-period">Q2 2027</div>
+        <div class="phase-name">Fase 4 — Empleados</div>
+        <div class="phase-card" style="border-top-color:#6B1735">
+          <div class="phase-kpi">KPI: -40% consultas HR, +30 min/día supervisor</div>
+          <div class="phase-use-cases">
+            · Employee agents para piso<br>
+            · Asistente supervisores<br>
+            · HR Self-Service<br>
+            · Inventario predictivo
+          </div>
+          <span class="phase-inv" style="--color:#6B1735;--color-light:#F5E6EC">Inversión: Alta</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════ ARQUITECTURA ══════ -->
+<div class="arch-bg">
+  <div class="section">
+    <div class="section-header" style="color:white">
+      <div class="section-dot" style="background:var(--accent)"></div>
+      <div>
+        <h2 style="color:white">Arquitectura de la Capa Agéntica</h2>
+        <p style="color:rgba(255,255,255,0.5)">Tres capas integradas nativamente en el ecosistema Salesforce</p>
+      </div>
+    </div>
+    <div class="arch-grid">
+
+      <div class="arch-layer">
+        <div class="arch-layer-title">Capa de Datos</div>
+        <div class="arch-item">
+          <div class="arch-bullet"></div>
+          <div>
+            <div class="arch-item-name">Data Cloud</div>
+            <div class="arch-item-desc">Perfil unificado del cliente: compras, navegación, preferencias y canal preferido</div>
+          </div>
+        </div>
+        <div class="arch-item">
+          <div class="arch-bullet"></div>
+          <div>
+            <div class="arch-item-name">Einstein</div>
+            <div class="arch-item-desc">Scoring de propensión, churn prediction, recomendaciones personalizadas</div>
+          </div>
+        </div>
+        <div class="arch-item">
+          <div class="arch-bullet"></div>
+          <div>
+            <div class="arch-item-name">CRM (Service Cloud)</div>
+            <div class="arch-item-desc">Historial completo de casos, interacciones y resoluciones</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arch-layer">
+        <div class="arch-layer-title">Capa Agéntica</div>
+        <div class="arch-item">
+          <div class="arch-bullet"></div>
+          <div>
+            <div class="arch-item-name">Agentforce</div>
+            <div class="arch-item-desc">Motor de decisión y ejecución autónoma en todos los canales</div>
+          </div>
+        </div>
+        <div class="arch-item">
+          <div class="arch-bullet"></div>
+          <div>
+            <div class="arch-item-name">Journey Decisioning</div>
+            <div class="arch-item-desc">Orquestación multicanal en tiempo real, acción en el momento correcto</div>
+          </div>
+        </div>
+        <div class="arch-item">
+          <div class="arch-bullet"></div>
+          <div>
+            <div class="arch-item-name">Einstein Personalization</div>
+            <div class="arch-item-desc">Personalización 1-to-1 en cada touchpoint del cliente</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arch-layer">
+        <div class="arch-layer-title">Canales de Activación</div>
+        <div class="arch-item">
+          <div class="arch-bullet"></div>
+          <div>
+            <div class="arch-item-name">WhatsApp</div>
+            <div class="arch-item-desc">Two-Way Messaging + Commerce conversacional</div>
+          </div>
+        </div>
+        <div class="arch-item">
+          <div class="arch-bullet"></div>
+          <div>
+            <div class="arch-item-name">Voz</div>
+            <div class="arch-item-desc">IVR inteligente + Outbound campaigns personalizadas</div>
+          </div>
+        </div>
+        <div class="arch-item">
+          <div class="arch-bullet"></div>
+          <div>
+            <div class="arch-item-name">Web | App | Service Cloud | Slack</div>
+            <div class="arch-item-desc">eCommerce + asistente en tiempo real + copilotos internos para empleados</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════ FOOTER ══════ -->
+<footer style="position:relative;">
+  Documento para uso comercial interno &nbsp;·&nbsp; <strong>COTO × Salesforce Agentforce</strong> &nbsp;·&nbsp; 2026
+  <span style="position:absolute; right:24px; top:50%; transform:translateY(-50%); font-size:0.8rem; opacity:0.7;">By Gaston Herbalejo</span>
+</footer>
+
+<!-- ══════ MODAL SIMULACIÓN ══════ -->
+<div id="uc-modal" class="uc-modal-overlay" style="display:none">
+  <div class="uc-modal-box">
+
+    <div class="uc-modal-header">
+      <div style="display:flex;align-items:center;gap:12px">
+        <span id="m-badge" class="m-badge"></span>
+        <div>
+          <div id="m-title" style="font-size:1.05rem;font-weight:700"></div>
+          <div id="m-trigger" style="font-size:0.8rem;color:#64748b;margin-top:2px"></div>
+        </div>
+      </div>
+      <button onclick="closeModal()" class="uc-modal-close">✕</button>
+    </div>
+
+    <div class="uc-modal-body">
+
+      <!-- PHONE -->
+      <div class="uc-phone-panel">
+        <div class="uc-phone-frame">
+          <div class="wa-bar">
+            <div class="wa-avatar-circle">🤖</div>
+            <div>
+              <div style="font-weight:600;font-size:13px">COTO Asistente</div>
+              <div id="wa-status" style="font-size:10px;opacity:0.85">En línea</div>
+            </div>
+          </div>
+          <div class="wa-chat" id="wa-chat"></div>
+          <div class="wa-input-bar">
+            <div class="wa-fake-input">Escribí un mensaje…</div>
+            <div class="wa-send-btn">➤</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TECH DETAILS -->
+      <div class="uc-tech-panel" id="m-tech-panel"></div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+/* ── hover hint on interactive items ── */
+.uc-interactive { cursor:pointer; user-select:none; transition:background .15s; }
+.uc-interactive:hover { background:#FFF0F0; border-radius:8px; }
+.uc-interactive:active { background:#FCEAEA; }
+
+/* ── modal overlay ── */
+.uc-modal-overlay {
+  position:fixed; inset:0; z-index:9999;
+  background:rgba(10,20,40,.75);
+  backdrop-filter:blur(6px);
+  display:flex; align-items:center; justify-content:center;
+  padding:16px;
+  animation:fadeIn .25s ease;
+}
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+.uc-modal-box {
+  background:#fff; border-radius:24px;
+  width:100%; max-width:920px; max-height:92vh;
+  display:flex; flex-direction:column;
+  box-shadow:0 32px 80px rgba(0,0,0,.35);
+  overflow:hidden;
+  animation:slideUp .3s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes slideUp {
+  from{transform:translateY(40px) scale(.96);opacity:0}
+  to{transform:translateY(0) scale(1);opacity:1}
+}
+
+.uc-modal-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 22px 14px; border-bottom:1px solid #f1f5f9;
+  flex-shrink:0;
+}
+.m-badge {
+  font-size:0.72rem; font-weight:800; letter-spacing:.5px;
+  background:#E3001B; color:#fff;
+  border-radius:8px; padding:3px 10px;
+}
+.uc-modal-close {
+  width:34px; height:34px; border-radius:50%; border:none;
+  background:#f1f5f9; color:#64748b; font-size:14px;
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  transition:background .15s;
+}
+.uc-modal-close:hover { background:#e2e8f0; color:#1e293b; }
+
+.uc-modal-body {
+  display:grid; grid-template-columns:1fr 1.15fr;
+  flex:1; overflow:hidden; min-height:0;
+}
+
+/* ── phone panel ── */
+.uc-phone-panel {
+  background:linear-gradient(160deg,#FFF0F0,#FFF8F0);
+  display:flex; align-items:center; justify-content:center;
+  padding:28px 24px;
+  border-right:1px solid #e2e8f0;
+}
+.uc-phone-frame {
+  width:268px; height:500px;
+  background:#fff;
+  border-radius:32px;
+  box-shadow:0 0 0 2px #d1d5db, 0 20px 60px rgba(0,0,0,.18);
+  overflow:hidden; display:flex; flex-direction:column;
+}
+.wa-bar {
+  background:linear-gradient(135deg,#075E54,#128C7E);
+  color:#fff; padding:12px 14px;
+  display:flex; align-items:center; gap:10px; flex-shrink:0;
+}
+.wa-avatar-circle {
+  width:34px; height:34px; border-radius:50%;
+  background:rgba(255,255,255,.2);
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px;
+}
+.wa-chat {
+  flex:1; overflow-y:auto; padding:10px 10px 4px;
+  background:#e5ddd5;
+  background-image:
+    radial-gradient(rgba(255,255,255,.07) 1px, transparent 1px);
+  background-size:20px 20px;
+  display:flex; flex-direction:column; gap:5px;
+  scroll-behavior:smooth;
+}
+.wa-input-bar {
+  display:flex; align-items:center; gap:8px;
+  padding:8px 10px; background:#f0f0f0; flex-shrink:0;
+  border-top:1px solid #ddd;
+}
+.wa-fake-input {
+  flex:1; background:#fff; border-radius:20px;
+  padding:7px 12px; font-size:11px; color:#aaa;
+}
+.wa-send-btn {
+  width:32px; height:32px; border-radius:50%;
+  background:#128C7E; color:#fff; font-size:13px;
+  display:flex; align-items:center; justify-content:center;
+}
+
+/* ── bubbles ── */
+.wa-bubble {
+  max-width:82%; padding:7px 10px 4px;
+  border-radius:8px; font-size:12px; line-height:1.45;
+  word-break:break-word; position:relative;
+  animation:bubbleIn .2s ease;
+}
+@keyframes bubbleIn {
+  from{opacity:0;transform:scale(.9) translateY(4px)}
+  to{opacity:1;transform:scale(1) translateY(0)}
+}
+.wa-bubble.bot {
+  background:#fff; align-self:flex-start;
+  border-radius:0 8px 8px 8px;
+  box-shadow:0 1px 2px rgba(0,0,0,.12);
+}
+.wa-bubble.user {
+  background:#d9fdd3; align-self:flex-end;
+  border-radius:8px 0 8px 8px;
+  box-shadow:0 1px 2px rgba(0,0,0,.1);
+}
+.wa-bubble.agent {
+  background:#dbeafe; align-self:flex-start;
+  border-radius:0 8px 8px 8px;
+  border-left:3px solid #E3001B;
+  box-shadow:0 1px 2px rgba(0,0,0,.1);
+}
+.wa-bubble.system {
+  background:rgba(0,0,0,.08); align-self:center;
+  font-size:10px; color:#555; padding:3px 10px;
+  border-radius:20px; max-width:90%; text-align:center;
+}
+.bubble-time {
+  font-size:9px; color:#aaa; margin-top:2px; text-align:right;
+}
+.bubble-agent-name {
+  font-size:10px; font-weight:700; color:#E3001B; margin-bottom:2px;
+}
+
+/* ── typing indicator ── */
+.wa-typing {
+  display:flex; align-items:center; gap:3px;
+  background:#fff; padding:10px 12px;
+  border-radius:0 8px 8px 8px; align-self:flex-start;
+  box-shadow:0 1px 2px rgba(0,0,0,.1);
+  animation:bubbleIn .2s ease;
+}
+.typing-dot {
+  width:6px; height:6px; border-radius:50%; background:#999;
+  animation:bounce 1.1s infinite;
+}
+.typing-dot:nth-child(2){animation-delay:.2s}
+.typing-dot:nth-child(3){animation-delay:.4s}
+@keyframes bounce {
+  0%,60%,100%{transform:translateY(0)}
+  30%{transform:translateY(-5px)}
+}
+
+/* ── tech panel ── */
+.uc-tech-panel {
+  padding:22px; overflow-y:auto; background:#fafbfc;
+}
+.tech-section { margin-bottom:20px; }
+.tech-label {
+  font-size:0.7rem; text-transform:uppercase; letter-spacing:1.5px;
+  color:#94a3b8; font-weight:700; margin-bottom:8px;
+}
+.tech-badges { display:flex; flex-wrap:wrap; gap:6px; }
+.tech-badge {
+  font-size:0.75rem; font-weight:600;
+  padding:4px 11px; border-radius:20px;
+  background:var(--bc); color:var(--btext,#fff);
+}
+.kpi-item {
+  display:flex; align-items:flex-start; gap:8px;
+  font-size:0.83rem; padding:5px 0;
+  border-bottom:1px solid #f1f5f9; color:#334155;
+}
+.kpi-item:last-child { border-bottom:none; }
+.kpi-dot { width:7px; height:7px; border-radius:50%; background:#E3001B; margin-top:5px; flex-shrink:0; }
+.dep-item {
+  display:flex; align-items:flex-start; gap:8px;
+  font-size:0.82rem; padding:5px 0;
+  border-bottom:1px solid #f1f5f9; color:#475569;
+}
+.dep-item:last-child { border-bottom:none; }
+.dep-check { color:#22c55e; font-size:13px; flex-shrink:0; }
+.complexity-bar {
+  display:flex; gap:6px; align-items:center; margin-top:6px;
+}
+.complexity-pip {
+  height:8px; border-radius:4px; flex:1;
+  background:#e2e8f0; transition:background .3s;
+}
+.complexity-pip.active { background:var(--ac); }
+.complexity-label { font-size:0.82rem; font-weight:700; color:var(--ac); margin-left:4px; }
+
+@media(max-width:700px){
+  .uc-modal-body { grid-template-columns:1fr; }
+  .uc-phone-panel { border-right:none; border-bottom:1px solid #e2e8f0; padding:20px 16px; }
+}
+</style>
+
+<script>
+/* ─── USE CASE DATA ─── */
+const UC = {
+  "1.1": {
+    name: "FAQ Avanzado con Contexto",
+    desc: "El agente no solo responde preguntas genéricas, sino que personaliza la respuesta según el historial del cliente: últimas compras, suscripciones activas y sucursal más cercana.",
+    trigger: "Cliente consulta sobre producto o servicio",
+    channel: ["Web","App","WhatsApp"],
+    poweredBy: [
+      {label:"Agentforce", color:"#E3001B"},
+      {label:"Data Cloud", color:"#032D60"},
+      {label:"Einstein Personalization", color:"#6B1735"}
+    ],
+    kpis: [
+      "Tasa de contención digital ↑",
+      "Volumen de llamadas al CC ↓",
+      "CSAT / NPS post-interacción ↑"
+    ],
+    deps: [
+      "Data Cloud con perfil unificado del cliente activo",
+      "Historial de compras conectado a Agentforce",
+      "Catálogo de productos actualizado en tiempo real",
+      "Knowledge base de FAQs configurada en Agentforce",
+      "Integración canal WhatsApp / Web Chat"
+    ],
+    complexity: 2,
+    msgs: [
+      {f:"user", t:"Hola, ¿tienen descuentos en aceite de oliva esta semana?"},
+      {f:"bot",  t:"¡Hola María! 👋 Vi que compraste Aceite Gallo el mes pasado."},
+      {f:"bot",  t:"Esta semana tenemos <b>20% OFF</b> en Aceite Gallo y Cocinero en tu sucursal de Palermo 🫒\n¿Te lo agrego al carrito?"},
+      {f:"user", t:"Sí, el Gallo 500ml por favor"},
+      {f:"bot",  t:"✅ ¡Listo! Aceite Gallo 500ml agregado al carrito.\nTu pedido anterior también incluía arroz ¿lo sumamos?"},
+      {f:"user", t:"No gracias, con eso alcanza"},
+      {f:"bot",  t:"¡Perfecto! ¿Necesitás algo más? 😊"}
+    ]
+  },
+  "1.2": {
+    name: "Where is My Order 2.0",
+    desc: "El agente ya disponible evoluciona: emite reembolsos automáticos por demoras, reprograma entregas y escala proactivamente a un agente humano si detecta frustración.",
+    trigger: "Cliente consulta estado de pedido",
+    channel: ["Web","App","WhatsApp"],
+    poweredBy: [
+      {label:"Agentforce", color:"#E3001B"},
+      {label:"Service Cloud", color:"#032D60"},
+      {label:"Einstein Sentiment", color:"#E3001B"}
+    ],
+    kpis: [
+      "Casos de soporte por entrega ↓",
+      "Tasa de reembolsos automáticos",
+      "Tiempo promedio de resolución (AHT) ↓"
+    ],
+    deps: [
+      "Integración con sistema logístico en tiempo real",
+      "Service Cloud con historial de pedidos",
+      "Reglas de negocio para reembolsos automáticos configuradas",
+      "Motor de detección de frustración (Einstein Sentiment)",
+      "Autorización para emitir créditos sin intervención humana"
+    ],
+    complexity: 2,
+    msgs: [
+      {f:"user", t:"¿Dónde está mi pedido #45823?"},
+      {f:"bot",  t:"¡Hola Juan! 🚚 Tu pedido <b>#45823</b> está en camino."},
+      {f:"bot",  t:"⚠️ Detecté una demora de 35 min por tráfico en Av. Corrientes.\nComo compensación ya te acredité <b>$300</b> en tu cuenta COTO Club 🎁"},
+      {f:"user", t:"Gracias. ¿Puedo cambiar el horario de entrega?"},
+      {f:"bot",  t:"¡Claro que sí! Opciones disponibles:\n📅 Mañana 10-14hs\n📅 Mañana 14-18hs\n📅 Pasado mañana 10-14hs"},
+      {f:"user", t:"Mañana por la mañana"},
+      {f:"bot",  t:"✅ ¡Listo! Reprogramado para mañana <b>10-14hs</b>. Te llega confirmación por email."}
+    ]
+  },
+  "1.3": {
+    name: "Resolución Autónoma de Reclamos",
+    desc: "El agente evalúa el reclamo, verifica el historial de compra y aprueba la devolución o crédito en cuenta automáticamente, sin intervención humana, para casos de bajo riesgo.",
+    trigger: "Cliente reporta producto defectuoso o faltante",
+    channel: ["Web","App","WhatsApp"],
+    poweredBy: [
+      {label:"Agentforce", color:"#E3001B"},
+      {label:"Service Cloud", color:"#032D60"},
+      {label:"Einstein", color:"#6B1735"}
+    ],
+    kpis: [
+      "% de reclamos resueltos sin intervención humana ↑",
+      "Costo por caso ↓",
+      "Tiempo de resolución ↓",
+      "CSAT post-reclamo ↑"
+    ],
+    deps: [
+      "Historial de compras accesible en tiempo real",
+      "Reglas de elegibilidad de devolución configuradas",
+      "Autorización para emitir créditos automáticos (umbral de riesgo)",
+      "Service Cloud con gestión de casos activa",
+      "Clasificación de casos por nivel de riesgo (Einstein)"
+    ],
+    complexity: 2,
+    msgs: [
+      {f:"user", t:"Me llegó un yogur vencido en mi pedido de ayer"},
+      {f:"bot",  t:"Lamentamos mucho el inconveniente, Ana 😔"},
+      {f:"bot",  t:"Verificando tu compra del 15/06... ✅\n<b>Yogur Ser Frutilla x6 — $2.190</b>\nCaso elegible para resolución automática."},
+      {f:"user", t:"¿Qué opciones tengo?"},
+      {f:"bot",  t:"Podemos:\n🔄 Reposición en tu próxima compra\n💳 Crédito de $2.190 en tu cuenta COTO Club\n¿Cuál preferís?"},
+      {f:"user", t:"Crédito en cuenta, por favor"},
+      {f:"bot",  t:"✅ <b>$2.190 acreditados</b> en tu cuenta COTO Club. ¡Ya disponibles para usar!"}
+    ]
+  },
+  "1.4": {
+    name: "Escalado Inteligente a Agente Humano",
+    desc: "El agente detecta frustración, enojo o consultas complejas y transfiere al agente humano en Service Cloud con el contexto completo de la conversación, reduciendo el tiempo de resolución en un 35%.",
+    trigger: "Detección de emoción negativa o alta complejidad",
+    channel: ["Web","App","WhatsApp","Voz"],
+    poweredBy: [
+      {label:"Agentforce", color:"#E3001B"},
+      {label:"Service Cloud", color:"#032D60"},
+      {label:"Einstein Sentiment", color:"#E3001B"}
+    ],
+    kpis: [
+      "AHT (tiempo de manejo promedio) ↓ 35%",
+      "Tasa de recontacto ↓",
+      "NPS post-interacción ↑",
+      "Tiempo de primera respuesta (FRT) ↓"
+    ],
+    deps: [
+      "Einstein Sentiment configurado para español argentino",
+      "Umbrales de escalado definidos por tipo de emoción",
+      "Service Cloud con routing de casos a agentes disponibles",
+      "Transferencia de contexto completo de conversación al agente",
+      "Dashboard de colas en tiempo real para supervisores"
+    ],
+    complexity: 3,
+    msgs: [
+      {f:"user",  t:"Esto es una vergüenza. Llevo 3 días esperando y NADIE me da respuesta."},
+      {f:"bot",   t:"Entendemos tu frustración, Carlos. Estamos verificando tu caso ahora mismo..."},
+      {f:"system",t:"⚡ Einstein detectó frustración elevada — iniciando escalado"},
+      {f:"bot",   t:"Tu reclamo #R-789 lleva <b>72hs sin resolución</b>. Merece atención prioritaria.\nTe transfiero ahora con Lucía, nuestra especialista, quien ya tiene todo tu historial."},
+      {f:"agent", t:"Hola Carlos, soy <b>Lucía</b> del equipo de atención prioritaria. Ya revisé todo tu caso y voy a resolverlo ahora mismo. ¿Me contás qué pasó?"},
+      {f:"user",  t:"Gracias por fin alguien me atiende bien"},
+      {f:"agent", t:"Por supuesto, Carlos. Estamos aplicando una solución de inmediato y además te enviamos una compensación por la demora 🎁"}
+    ]
+  },
+  "1.5": {
+    name: "Gestión de Devoluciones y Cambios",
+    desc: "Proceso end-to-end automatizado: verificación de elegibilidad, generación de etiqueta de devolución y acreditación de reembolso o cambio de producto — sin intervención humana.",
+    trigger: "Cliente solicita devolución o cambio de producto",
+    channel: ["Web","App"],
+    poweredBy: [
+      {label:"Agentforce", color:"#E3001B"},
+      {label:"Service Cloud", color:"#032D60"}
+    ],
+    kpis: [
+      "Tiempo de procesamiento de devoluciones ↓",
+      "Costo operativo del proceso ↓",
+      "Tasa de errores en devoluciones ↓",
+      "CSAT post-devolución ↑"
+    ],
+    deps: [
+      "Catálogo de política de devoluciones en Agentforce",
+      "Integración con sistema logístico para etiquetas de retiro",
+      "Service Cloud para trazabilidad del caso",
+      "Motor de acreditación de reembolsos conectado a sistema contable",
+      "Verificación de elegibilidad (días desde compra, condición del producto)"
+    ],
+    complexity: 2,
+    msgs: [
+      {f:"user", t:"Quiero devolver unas zapatillas, me quedaron grandes"},
+      {f:"bot",  t:"¡Hola! Con gusto te ayudo con la devolución 👟"},
+      {f:"bot",  t:"Verificando tu compra... ✅\n<b>Zapatillas Nike Talle 42 — $28.500</b> (compra del 10/06)\nElegible para devolución sin cargo."},
+      {f:"user", t:"¿Cómo hago para devolverlas?"},
+      {f:"bot",  t:"Tenés dos opciones:\n🏪 <b>Dejás en sucursal</b> — cualquier COTO, sin turno\n🚚 <b>Retiro a domicilio</b> — gratis, coordinamos el día"},
+      {f:"user", t:"Las dejo en la sucursal de Palermo"},
+      {f:"bot",  t:"✅ Generé tu <b>etiqueta de devolución</b> 📦 Te la envío por email.\nEl reembolso de <b>$28.500</b> se acredita en 48hs hábiles una vez recibido el producto."}
+    ]
+  },
+
+  /* ─── CATEGORÍA 2: CONVERSIÓN Y eCOMMERCE ─── */
+
+  "2.1": {
+    name: "Rescate de Carrito Abandonado",
+    desc: "El agente detecta que el cliente inició una compra y no la completó. Envía un mensaje personalizado con el resumen del carrito y, si aplica, un beneficio contextual (descuento por primera compra online, cuotas sin interés). Incremento de conversión: 15–25%.",
+    trigger: "Carrito activo sin compra completada (30–60 min)",
+    channel: ["WhatsApp","Email","App"],
+    poweredBy: [
+      {label:"Agentforce", color:"#E07B1A"},
+      {label:"Journey Decisioning", color:"#D4820A"},
+      {label:"Data Cloud", color:"#032D60"}
+    ],
+    kpis: [
+      "Tasa de conversión eCommerce ↑ 15–25%",
+      "Tasa de recuperación de carrito ↑",
+      "Revenue incremental por canal digital ↑"
+    ],
+    deps: [
+      "Evento de abandono de carrito publicado en Data Cloud",
+      "Journey Decisioning con timer de 30–60 min configurado",
+      "Integración WhatsApp Business API activa",
+      "Segmentación por perfil para elegir tipo de incentivo",
+      "Catálogo de beneficios contextuales (descuentos, cuotas)"
+    ],
+    complexity: 2,
+    msgs: [
+      {f:"bot",  t:"¡Hola María! 👋 Dejaste productos en tu carrito hace 45 minutos."},
+      {f:"bot",  t:"🛒 Tu carrito:\n• Detergente Skip x3 — $2.100\n• Suavizante Comfort — $1.890\n• Esponjas x5 — $450\n\n<b>Total: $4.440</b>"},
+      {f:"bot",  t:"Para tu primera compra online te regalamos <b>15% OFF</b> con el código <b>COTO15</b> 🎉\n⏳ Válido por las próximas 2 horas."},
+      {f:"user", t:"Buenísimo, completo ahora mismo"},
+      {f:"bot",  t:"¡Genial! 🚀 Aplicando el descuento...\n<b>Total con 15% OFF: $3.774</b>"},
+      {f:"user", t:"¿Puedo pagar con tarjeta de crédito en cuotas?"},
+      {f:"bot",  t:"¡Sí! Tenés 3 cuotas sin interés con Visa y Mastercard 💳\n¿Confirmamos el pedido?"},
+      {f:"user", t:"Sí, confirmo"},
+      {f:"bot",  t:"✅ <b>Pedido confirmado</b> 🎊\nEntrega mañana 10–14hs. ¡Gracias por comprar en COTO!"}
+    ]
+  },
+
+  "2.2": {
+    name: "Asistente de Compra Personalizado",
+    desc: "El agente actúa como personal shopper: sugiere productos según preferencias históricas, perfil de compra y stock disponible en sucursal o para delivery.",
+    trigger: "Cliente navega por categoría o busca un producto",
+    channel: ["Web","App"],
+    poweredBy: [
+      {label:"Agentforce", color:"#E07B1A"},
+      {label:"Einstein Personalization", color:"#6B1735"},
+      {label:"Data Cloud", color:"#032D60"}
+    ],
+    kpis: [
+      "Ticket promedio (AOV) ↑",
+      "Tasa de conversión por sesión ↑",
+      "Tiempo de permanencia en la app ↑"
+    ],
+    deps: [
+      "Einstein Personalization con historial de compras activo",
+      "Catálogo de productos con stock en tiempo real por sucursal",
+      "Perfil de preferencias del cliente en Data Cloud",
+      "Widget de asistente embebido en web y app",
+      "Integración con motor de búsqueda del eCommerce"
+    ],
+    complexity: 2,
+    msgs: [
+      {f:"user", t:"Busco un aceite para cocinar, bueno y económico"},
+      {f:"bot",  t:"¡Perfecto! Analizando tus preferencias de compra... 🔍"},
+      {f:"bot",  t:"Basado en tu historial, te recomiendo:\n\n1️⃣ <b>Aceite Cocinero Girasol 1.5L</b> — $1.890\n   (tu marca habitual, stock en Palermo ✅)\n2️⃣ <b>Aceite Natura Girasol 2L</b> — $2.450\n   (mejor precio por litro 💡)\n3️⃣ <b>Aceite Lira Maíz 1.5L</b> — $1.650\n   (opción económica ✅)"},
+      {f:"user", t:"El Natura me parece bien, mejor precio por litro"},
+      {f:"bot",  t:"Excelente elección 👍\n<b>Aceite Natura 2L</b> disponible para:\n🚚 Delivery mañana 10–14hs\n🏪 Retiro hoy en sucursal Palermo (14 unidades en stock)"},
+      {f:"user", t:"Lo pido para delivery"},
+      {f:"bot",  t:"✅ Aceite Natura 2L agregado al carrito.\n¿Querés que te sugiera más productos para completar el pedido?"}
+    ]
+  },
+
+  "2.3": {
+    name: "Cross-selling Inteligente",
+    desc: "Sugerencia de productos complementarios en tiempo real. Ej: cliente compra pañales → agente sugiere toallitas y leche maternizada con descuento combinado. Incremento de ticket promedio: 10–18%.",
+    trigger: "Post-compra o durante el checkout",
+    channel: ["Web","App","WhatsApp"],
+    poweredBy: [
+      {label:"Einstein Recommendations", color:"#E07B1A"},
+      {label:"Agentforce", color:"#E3001B"},
+      {label:"Data Cloud", color:"#032D60"}
+    ],
+    kpis: [
+      "Ticket promedio (AOV) ↑ 10–18%",
+      "Unidades por transacción (UPT) ↑",
+      "Revenue por categoría cruzada ↑"
+    ],
+    deps: [
+      "Einstein Recommendations entrenado con datos de co-compra",
+      "Reglas de afinidad de categorías configuradas",
+      "Umbral mínimo de confianza para mostrar sugerencia (≥70%)",
+      "Integración en página de checkout y post-compra",
+      "Lógica de descuento combinado aprobada por negocio"
+    ],
+    complexity: 2,
+    msgs: [
+      {f:"system", t:"Cliente acaba de confirmar compra de Pañales Huggies Talle M x50"},
+      {f:"bot",  t:"¡Gracias por tu compra, Laura! 🎉"},
+      {f:"bot",  t:"Compradores como vos también llevan:\n\n💧 <b>Toallitas Huggies x80</b> — $1.200\n🍼 <b>Leche NAN 1 — 900g</b> — $4.890\n\n<b>COMBO: 10% OFF</b> si los sumás ahora 🛍️"},
+      {f:"user", t:"Agrego las toallitas, la leche la tengo"},
+      {f:"bot",  t:"✅ Toallitas Huggies x80 agregadas con <b>10% OFF</b> aplicado.\n\nTotal actualizado: <b>$34.200</b> 💳"},
+      {f:"user", t:"¿Tienen crema para bebés también?"},
+      {f:"bot",  t:"¡Sí! <b>Crema Nivea Baby 200ml</b> — $980\nY <b>Johnson's Body Lotion Baby 200ml</b> — $1.150\n¿Sumamos alguna?"}
+    ]
+  },
+
+  "2.4": {
+    name: "Upsell de Suscripción COTO Club",
+    desc: "El agente identifica clientes de alto valor sin suscripción activa y presenta el beneficio concreto en pesos de lo que ahorrarían por mes si se suscribieran.",
+    trigger: "Cliente frecuente sin membresía premium activa",
+    channel: ["WhatsApp","App","Web"],
+    poweredBy: [
+      {label:"Einstein Scoring", color:"#6B1735"},
+      {label:"Agentforce", color:"#E3001B"},
+      {label:"Data Cloud", color:"#032D60"}
+    ],
+    kpis: [
+      "Tasa de conversión a suscripción ↑",
+      "LTV del cliente ↑",
+      "Revenue recurrente por membresías activas ↑"
+    ],
+    deps: [
+      "Einstein Scoring para identificar clientes de alto valor",
+      "Cálculo de ahorro proyectado basado en historial real de compras",
+      "Lógica de presentación de beneficio en pesos (no en porcentaje)",
+      "Integración con sistema de membresías para activación inmediata",
+      "Journey de nurturing para clientes que no convierten en 1er contacto"
+    ],
+    complexity: 2,
+    msgs: [
+      {f:"bot",  t:"¡Hola Roberto! 👋 Tenemos algo especial para vos."},
+      {f:"bot",  t:"Analizamos tus compras de los últimos 3 meses (promedio <b>$18.500/mes</b>) y calculamos que con <b>COTO Club</b> ahorrarías <b>$3.200 por mes</b> 💰"},
+      {f:"user", t:"¿Cuánto sale la suscripción?"},
+      {f:"bot",  t:"<b>COTO Club</b> cuesta <b>$890/mes</b>.\n\nCon tu nivel de compra:\n✅ Ahorro estimado: $3.200/mes\n✅ ROI: 3.6x sobre el costo\n✅ Envíos gratis ilimitados\n✅ 5% extra en todas las compras"},
+      {f:"user", t:"Suena bien, ¿cómo lo activo?"},
+      {f:"bot",  t:"¡Genial! Te activo COTO Club ahora mismo con el primer mes <b>gratis</b> 🎁\n¿Confirmamos con tu tarjeta Visa terminada en 4521?"},
+      {f:"user", t:"Sí, confirmo"},
+      {f:"bot",  t:"✅ <b>COTO Club activado</b> 🌟\nYa podés usar tus beneficios en tu próxima compra. ¡Bienvenido al club!"}
+    ]
+  },
+
+  "2.5": {
+    name: "Disponibilidad y Reserva de Stock",
+    desc: "El agente informa disponibilidad en sucursales cercanas y ofrece reservar el producto o activar alerta cuando vuelva a estar disponible online.",
+    trigger: "Cliente consulta por producto sin stock online",
+    channel: ["Web","App"],
+    poweredBy: [
+      {label:"Agentforce", color:"#E07B1A"},
+      {label:"Data Cloud", color:"#032D60"}
+    ],
+    kpis: [
+      "Tasa de quiebre de stock percibido ↓",
+      "Conversión de reservas a compra ↑",
+      "Tráfico a sucursales por redirección digital ↑"
+    ],
+    deps: [
+      "Stock en tiempo real por sucursal integrado en Data Cloud",
+      "Geolocalización del cliente para sucursales cercanas",
+      "Sistema de reservas con expiración configurable (24–48hs)",
+      "Alertas de reposición de stock conectadas al cliente",
+      "Integración con sistema de inventario de cada sucursal"
+    ],
+    complexity: 2,
+    msgs: [
+      {f:"user", t:"¿Tienen PlayStation 5 disponible?"},
+      {f:"bot",  t:"Verificando stock en tiempo real... 🔍"},
+      {f:"bot",  t:"El <b>PS5 no tiene stock online</b> en este momento 😕\n\nPero encontré disponibilidad en sucursales cercanas a vos:\n📍 <b>Caballito</b> — 2 unidades\n📍 <b>Flores</b> — 1 unidad\n📍 <b>Almagro</b> — 3 unidades"},
+      {f:"user", t:"¿Puedo reservar uno en Caballito?"},
+      {f:"bot",  t:"¡Claro! Te reservo una unidad en <b>COTO Caballito</b> 🎮\nLa reserva dura <b>24 horas</b>. Pasás con tu DNI a retirar.\n\n¿Confirmo la reserva?"},
+      {f:"user", t:"Sí, confirmame"},
+      {f:"bot",  t:"✅ <b>Reserva confirmada</b> en COTO Caballito (Av. Rivadavia 5200)\nVálida hasta mañana 18hs. Te llega el código de reserva por email 📧\n\n¿Querés que te avise también cuando haya stock online?"},
+      {f:"user", t:"Sí, activame la alerta"},
+      {f:"bot",  t:"🔔 Alerta activada. Te notifico en cuanto llegue stock online."}
+    ]
+  },
+
+  "2.6": {
+    name: "Asistente de Lista de Compras",
+    desc: "El agente analiza el historial de compras y genera automáticamente la lista de la semana, sugiriendo reponer los productos que se agotan según el patrón de consumo del hogar.",
+    trigger: "Cliente accede a su lista o consulta productos recurrentes",
+    channel: ["App","WhatsApp"],
+    poweredBy: [
+      {label:"Agentforce", color:"#E07B1A"},
+      {label:"Einstein", color:"#6B1735"},
+      {label:"Data Cloud", color:"#032D60"}
+    ],
+    kpis: [
+      "Frecuencia de compra ↑",
+      "Retención de clientes activos ↑",
+      "Ticket promedio por visita recurrente ↑"
+    ],
+    deps: [
+      "Historial de compras con frecuencia y cantidades en Data Cloud",
+      "Modelo predictivo de agotamiento de productos por hogar",
+      "Integración con lista de compras en la app COTO",
+      "Stock en tiempo real para validar disponibilidad de sugerencias",
+      "Preferencias de canal de entrega del cliente"
+    ],
+    complexity: 1,
+    msgs: [
+      {f:"user", t:"Armame la lista de compras para esta semana"},
+      {f:"bot",  t:"Analizando tu patrón de compras del último mes... 🔄"},
+      {f:"bot",  t:"📝 <b>Lista sugerida para esta semana:</b>\n\n🥛 Leche La Serenísima x6 — se te acaba ~hoy\n🍞 Pan Bimbo Lactal — se agota el jueves\n🥛 Yogur Ser x4 — patrón semanal\n🧴 Detergente Skip — stock bajo\n🍌 Banana y Manzana — comprás todas las semanas"},
+      {f:"user", t:"Perfecto, agregalas todas al carrito"},
+      {f:"bot",  t:"✅ <b>5 productos agregados</b> al carrito.\nTotal estimado: <b>$5.340</b> 🛒\n\n¿Entrega mañana o pasado mañana?"},
+      {f:"user", t:"Mañana por la mañana"},
+      {f:"bot",  t:"📅 Turno de entrega: <b>mañana 10–14hs</b>\n¿Confirmamos el pedido?"},
+      {f:"user", t:"Sí"},
+      {f:"bot",  t:"✅ <b>Pedido confirmado</b> 🎉 ¡Hasta la semana que viene, Valeria!"}
+    ]
+  },
+
+  /* ─── CATEGORÍA 3: MARKETING SEGMENTADO ─── */
+
+  "3.1": {
+    name: "Campaña 1-to-1 por Segmento de Cliente",
+    desc: "En lugar de enviar la misma promo a toda la base, Data Cloud segmenta por perfil (familias con niños, adultos mayores, foodies, etc.) y el agente personaliza el mensaje, el producto y el canal para cada segmento.",
+    trigger: "Lanzamiento de oferta o evento comercial",
+    channel: ["Email","WhatsApp","Push"],
+    poweredBy: [
+      {label:"Data Cloud", color:"#032D60"},
+      {label:"Journey Decisioning", color:"#D4820A"},
+      {label:"Agentforce", color:"#E3001B"}
+    ],
+    kpis: [
+      "CTR de campañas ↑ vs. comunicación masiva",
+      "Tasa de conversión post-campaña ↑",
+      "Revenue atribuido por segmento ↑",
+      "ROI de campaña ↑"
+    ],
+    deps: [
+      "Data Cloud con segmentos de audiencia activos (familias, foodies, etc.)",
+      "Journey Decisioning para orquestación multicanal",
+      "Plantillas de mensajes por segmento aprobadas por marketing",
+      "Catálogo de productos por segmento con precios y descuentos",
+      "Integración con Marketing Cloud para envío de email y push"
+    ],
+    complexity: 2,
+    msgs: [
+      {f:"system", t:"Segmento detectado: Familia con bebés — 38.400 clientes"},
+      {f:"bot",  t:"¡Hola familia Rodríguez! 👨‍👩‍👧 Tenemos una semana especial para ustedes:"},
+      {f:"bot",  t:"🍼 <b>Oferta exclusiva para familias con bebés:</b>\n\n• Pañales Pampers todas las tallas — <b>25% OFF</b>\n• Leche de fórmula NAN — <b>15% OFF</b>\n• Toallitas Huggies x80 — <b>3x2</b>\n• Cremas Johnson's Baby — <b>20% OFF</b>\n\n⏳ Solo hasta el domingo"},
+      {f:"user", t:"¿El descuento aplica también en la app?"},
+      {f:"bot",  t:"¡Sí! En <b>app, web y sucursal</b> 🛒\nUsá el código <b>BEBES2026</b> en el checkout para aplicar todos los descuentos automáticamente."},
+      {f:"user", t:"Perfecto, ya entro a la app"},
+      {f:"bot",  t:"¡Genial! 🎉 Si necesitás ayuda para armar el pedido, estoy acá. ¡Que aproveches!"}
+    ]
+  },
+
+  "3.2": {
+    name: "Oferta Contextual en Tiempo Real",
+    desc: "Cuando el cliente abre la app o se detecta en una sucursal (geofencing), el agente activa una oferta de impacto inmediato basada en su historial. Ej: 'Hoy en tu sucursal de Belgrano, 3x2 en los yogures que siempre comprás.'",
+    trigger: "Cliente entra a la app o se detecta cerca de una sucursal",
+    channel: ["App","WhatsApp"],
+    poweredBy: [
+      {label:"Data Cloud", color:"#032D60"},
+      {label:"Einstein Personalization", color:"#6B1735"},
+      {label:"Agentforce", color:"#E3001B"}
+    ],
+    kpis: [
+      "Ticket promedio en sucursal ↑",
+      "Tasa de redención de ofertas contextuales ↑",
+      "Ventas en categorías activadas ↑"
+    ],
+    deps: [
+      "SDK de geolocalización activo en la app COTO",
+      "Geofencing configurado por sucursal (radio 200–500m)",
+      "Einstein Personalization con productos favoritos por cliente",
+      "Reglas de activación de oferta por contexto (hora, día, clima)",
+      "Presupuesto de descuentos contextuales aprobado por categoría"
+    ],
+    complexity: 3,
+    msgs: [
+      {f:"system", t:"📍 Sofía detectada a 180m de COTO Belgrano — 11:23hs"},
+      {f:"bot",  t:"¡Hola Sofía! Vemos que estás cerca de nuestra sucursal de Belgrano 📍"},
+      {f:"bot",  t:"Hoy tenés una oferta que armamos especialmente para vos:\n\n🥛 <b>3x2 en Yogures Activia</b> — los que comprás todas las semanas\n🧃 <b>20% OFF en jugos Cepita</b> — tu marca habitual\n\n¡Solo hoy en la sucursal de Belgrano!"},
+      {f:"user", t:"Qué bueno, ya entro al super"},
+      {f:"bot",  t:"¡Te esperamos! 🛒 El 3x2 en Activia está en <b>Góndola de Lácteos, pasillo 4</b>.\n¿Querés que te avise si hay más ofertas en tus categorías favoritas mientras recorrés la tienda?"},
+      {f:"user", t:"Sí, avisame"},
+      {f:"bot",  t:"🔔 Alertas activadas. Si encontramos algo en tu historial, te mandamos una notificación. ¡Buenas compras!"}
+    ]
+  },
+
+  "3.3": {
+    name: "Reactivación de Clientes Inactivos",
+    desc: "Score de propensión identifica clientes en riesgo de fuga. El agente lanza una campaña de reactivación hiperpersonalizada con el producto favorito del cliente y un incentivo calculado según su valor histórico.",
+    trigger: "Sin compra en 30, 60 o 90 días",
+    channel: ["WhatsApp","Email"],
+    poweredBy: [
+      {label:"Einstein Scoring", color:"#6B1735"},
+      {label:"Journey Decisioning", color:"#D4820A"},
+      {label:"Data Cloud", color:"#032D60"}
+    ],
+    kpis: [
+      "Tasa de reactivación ↑",
+      "Churn rate ↓",
+      "Revenue recuperado ↑",
+      "Costo de reactivación por cliente ↓"
+    ],
+    deps: [
+      "Einstein Scoring con modelo de propensión a fuga activo",
+      "Segmentación por días de inactividad (30 / 60 / 90 días)",
+      "Producto favorito identificado por Data Cloud",
+      "Presupuesto de incentivo escalonado por valor histórico del cliente",
+      "Journey de seguimiento si no hay respuesta en 48hs"
+    ],
+    complexity: 2,
+    msgs: [
+      {f:"system", t:"Martín — 62 días sin compra · Score de fuga: Alto · LTV histórico: $85.000"},
+      {f:"bot",  t:"¡Hola Martín! Te extrañamos en COTO 💙"},
+      {f:"bot",  t:"Hace un tiempo que no te vemos por acá. Sabemos que te encantan los vinos Malbec, así que armamos algo especial:"},
+      {f:"bot",  t:"🍷 <b>Zuccardi Valle de Uco Malbec</b> — tu favorito\n<b>30% OFF</b> esta semana, solo para vos.\n\n¿Lo sumamos a un pedido ahora?"},
+      {f:"user", t:"Qué bueno! ¿Qué más tienen en vinos?"},
+      {f:"bot",  t:"¡Tenemos una selección genial esta semana! 🍷\n\n• Luigi Bosca Malbec — <b>20% OFF</b>\n• Achaval Ferrer Malbec — <b>25% OFF</b>\n• Clos de los Siete — <b>15% OFF</b>\n\n¿Armamos un combo de 3 botellas con envío gratis?"},
+      {f:"user", t:"Sí, armame el combo"},
+      {f:"bot",  t:"✅ <b>Combo vinos x3 armado</b> — $8.490 con envío gratis 🚚\nEntrega mañana. ¡Bienvenido de vuelta, Martín! 🎉"}
+    ]
+  },
+
+  "3.4": {
+    name: "Campaña de Fechas Clave Personalizada",
+    desc: "El agente activa una campaña especial en la fecha correcta, con el producto correcto y el canal preferido del cliente. Ej: descuento en su marca favorita de vino en su cumpleaños.",
+    trigger: "Cumpleaños del cliente, aniversario, Navidad u otras fechas clave",
+    channel: ["WhatsApp","Email","Push"],
+    poweredBy: [
+      {label:"Journey Decisioning", color:"#D4820A"},
+      {label:"Data Cloud", color:"#032D60"},
+      {label:"Agentforce", color:"#E3001B"}
+    ],
+    kpis: [
+      "Tasa de apertura y CTR ↑ en fechas clave",
+      "Conversión en temporadas ↑",
+      "Revenue incremental en fechas especiales ↑"
+    ],
+    deps: [
+      "Fecha de nacimiento del cliente en el perfil de Data Cloud",
+      "Historial de compras para identificar producto/categoría favorita",
+      "Journey automático disparado N días antes de la fecha",
+      "Presupuesto de descuento por cumpleaños aprobado por negocio",
+      "Plantillas de mensaje personalizadas por ocasión"
+    ],
+    complexity: 1,
+    msgs: [
+      {f:"system", t:"🎂 Hoy es el cumpleaños de Laura — categoría favorita: Vinos"},
+      {f:"bot",  t:"🎂 <b>¡Feliz cumpleaños, Laura!</b>\n¡Hoy es tu día y queremos celebrarlo con vos! 🥂"},
+      {f:"bot",  t:"Te regalamos <b>30% OFF</b> en tu vino favorito:\n\n🍷 <b>Rutini Colección Malbec 750ml</b>\nPrecio especial de cumpleaños: <b>$2.100</b> (antes $3.000)\n\n⏳ Válido solo hoy"},
+      {f:"user", t:"Qué lindo detalle, gracias! ¿Puedo agregar una torta también?"},
+      {f:"bot",  t:"¡Por supuesto! 🎂 Tenemos:\n\n• Torta Bon o Bon 1kg — $4.200\n• Torta Oreo 1kg — $3.800\n• Torta de Chocolate Clásica — $3.200\n\n¿Cuál te gusta?"},
+      {f:"user", t:"La de Bon o Bon"},
+      {f:"bot",  t:"✅ <b>Vino Rutini + Torta Bon o Bon</b> agregados 🎉\n\nEntrega esta tarde <b>18–20hs</b> para que llegue a tiempo.\n¡Que tengas un cumpleaños increíble, Laura! 🥳"}
+    ]
+  },
+
+  "3.5": {
+    name: "NPS Post-Compra con Acción Inmediata",
+    desc: "El agente envía una encuesta corta de satisfacción. Si detecta insatisfacción, genera automáticamente un crédito de goodwill y alerta al equipo de retención. Si es positivo, solicita una reseña pública.",
+    trigger: "24–48hs después de una compra o entrega",
+    channel: ["WhatsApp","Email"],
+    poweredBy: [
+      {label:"Einstein Sentiment", color:"#E3001B"},
+      {label:"Journey Decisioning", color:"#D4820A"},
+      {label:"Agentforce", color:"#E3001B"}
+    ],
+    kpis: [
+      "NPS ↑",
+      "Tasa de detractores retenidos ↑",
+      "Volumen de reseñas positivas ↑",
+      "Tasa de churn post-reclamo ↓"
+    ],
+    deps: [
+      "Journey disparado automáticamente 24–48hs post-entrega",
+      "Einstein Sentiment para clasificar respuesta (promotor / neutro / detractor)",
+      "Autorización para emitir créditos de goodwill automáticos",
+      "Alertas a equipo de retención para detractores de alto valor",
+      "Integración con plataforma de reseñas públicas para promotores"
+    ],
+    complexity: 2,
+    msgs: [
+      {f:"bot",  t:"¡Hola Diego! 👋 Tu pedido del martes ya fue entregado."},
+      {f:"bot",  t:"¿Cómo fue tu experiencia? Contanos con un número del <b>1 al 5</b> ⭐\n\n1 = Muy mala\n5 = Excelente"},
+      {f:"user", t:"2 — llegó tarde y faltaban 2 productos"},
+      {f:"system", t:"⚠️ Einstein detectó detractor (score 2) — activando protocolo de retención"},
+      {f:"bot",  t:"Diego, lamentamos mucho eso 😔 No es la experiencia que queremos para vos."},
+      {f:"bot",  t:"De inmediato:\n✅ Acreditamos <b>$600 de goodwill</b> en tu cuenta COTO Club\n✅ Los 2 productos faltantes van en tu próximo pedido <b>sin cargo</b>\n✅ Notificamos al equipo de logística para investigar la demora"},
+      {f:"user", t:"Ok, muchas gracias por responder rápido"},
+      {f:"bot",  t:"¡Gracias a vos por contarnos, Diego! Tu feedback nos ayuda a mejorar 💙\nLos $600 ya están disponibles en tu cuenta. ¿Necesitás algo más?"}
+    ]
+  },
+
+  /* ─── CATEGORÍA 4: REDUCCIÓN DEL COSTO DE SERVIR ─── */
+
+  "4.1": {
+    name: "Deflexión Inteligente de Llamadas",
+    desc: "Antes de conectar con un agente humano, el agente digital resuelve las consultas de alta frecuencia (estado de pedido, saldo de puntos, horarios, cambios de turno de entrega). Meta: 30–40% de deflexión.",
+    trigger: "Cliente llama al 0800 del contact center",
+    channel: ["Voz","IVR","WhatsApp"],
+    poweredBy: [
+      {label:"Agentforce", color:"#E3001B"},
+      {label:"Service Cloud", color:"#032D60"},
+      {label:"Einstein", color:"#6B1735"}
+    ],
+    kpis: [
+      "Tasa de deflexión de llamadas ↑ 30–40%",
+      "Volumen de llamadas al CC ↓",
+      "Costo por contacto ↓",
+      "Tiempo de espera promedio ↓"
+    ],
+    deps: [
+      "IVR inteligente integrado con Agentforce Voice",
+      "Identificación del cliente por número de teléfono",
+      "Conexión en tiempo real con sistema logístico y Service Cloud",
+      "Lógica de escalado a agente humano cuando el agente no resuelve",
+      "Dashboard de deflexión para monitoreo del CC"
+    ],
+    complexity: 2,
+    msgs: [
+      {f:"system", t:"📞 Llamada entrante al 0800 — identificado: Carlos Méndez"},
+      {f:"bot",  t:"Bienvenido al centro de atención COTO. Soy tu asistente virtual 🤖\n\nIdentifiqué tu cuenta. ¿En qué puedo ayudarte hoy?"},
+      {f:"user", t:"Quiero saber dónde está mi pedido"},
+      {f:"bot",  t:"¡Claro! Tu pedido <b>#67234</b> está en camino 🚚\nLlegada estimada: hoy entre <b>15–17hs</b> a tu domicilio en Av. Santa Fe 1200."},
+      {f:"user", t:"No voy a estar, ¿lo puedo cambiar para mañana?"},
+      {f:"bot",  t:"Por supuesto. Opciones disponibles:\n\n📅 Mañana 9–13hs\n📅 Mañana 14–18hs\n\nDecime cuál preferís y lo reprogramo ahora mismo."},
+      {f:"user", t:"Mañana a la mañana"},
+      {f:"bot",  t:"✅ Reprogramado para mañana <b>9–13hs</b>. Te llega confirmación por WhatsApp.\n\n¿Puedo ayudarte con algo más?"},
+      {f:"user", t:"No, era eso. Gracias"},
+      {f:"bot",  t:"¡Hasta luego! Caso resuelto sin espera ni agente humano 👋"}
+    ]
+  },
+
+  "4.2": {
+    name: "Auto-resolución de Casos Tier 1",
+    desc: "Para casos de baja complejidad (reembolso menor, queja de producto, consulta de factura), el agente los resuelve automáticamente sin asignación a un agente humano. Reduce el backlog del equipo de servicio.",
+    trigger: "Caso creado en Service Cloud de baja complejidad",
+    channel: ["Web","App","WhatsApp","Voz"],
+    poweredBy: [
+      {label:"Agentforce", color:"#E3001B"},
+      {label:"Service Cloud", color:"#032D60"}
+    ],
+    kpis: [
+      "% de casos auto-resueltos ↑",
+      "Backlog de casos ↓",
+      "Costo operativo del servicio ↓",
+      "AHT ↓"
+    ],
+    deps: [
+      "Clasificación automática de casos por tipo y complejidad",
+      "Umbral de riesgo definido por negocio para resolución autónoma",
+      "Autorización para emitir créditos menores sin supervisión",
+      "Base de conocimiento con resoluciones estándar Tier 1",
+      "Escalado automático si el agente no puede resolver en N pasos"
+    ],
+    complexity: 2,
+    msgs: [
+      {f:"user", t:"La factura de mi última compra tiene un error en el monto total"},
+      {f:"bot",  t:"Verificando tu factura... 🔍"},
+      {f:"bot",  t:"Encontré la factura <b>#F-0045823</b> del 14/06.\n\nMonto cobrado: <b>$8.850</b>\nMonto correcto: <b>$8.450</b>\nDiferencia detectada: <b>$400</b> ⚠️"},
+      {f:"user", t:"Sí, eso es. ¿Cómo lo corrijo?"},
+      {f:"bot",  t:"Puedo resolver esto ahora mismo:\n\n💳 <b>Acreditar $400</b> en tu cuenta COTO Club\n📄 <b>Emitir factura rectificativa</b> por email\n\n¿Cuál preferís?"},
+      {f:"user", t:"El crédito en cuenta está bien"},
+      {f:"bot",  t:"✅ <b>$400 acreditados</b> en tu cuenta COTO Club.\nCaso resuelto en menos de 2 minutos, sin intervención humana 🚀"},
+    ]
+  },
+
+  "4.3": {
+    name: "Resumen Automático de Caso para Agentes",
+    desc: "Cuando un caso escala a un agente humano, Agentforce genera automáticamente un resumen del historial del cliente, la conversación previa y las acciones recomendadas. Ahorra 3–5 min por caso.",
+    trigger: "Caso escalado a agente humano en Service Cloud",
+    channel: ["Service Cloud (interno)"],
+    poweredBy: [
+      {label:"Agentforce", color:"#E3001B"},
+      {label:"Service Cloud", color:"#032D60"},
+      {label:"Einstein", color:"#6B1735"}
+    ],
+    kpis: [
+      "AHT ↓ (ahorro 3–5 min por caso)",
+      "Productividad del agente (casos/hora) ↑",
+      "Tiempo de onboarding de nuevos agentes ↓",
+      "CSAT del agente ↑"
+    ],
+    deps: [
+      "Historial completo de interacciones del cliente en Service Cloud",
+      "Agentforce con acceso al contexto del caso en tiempo real",
+      "Plantilla de resumen estandarizada por tipo de caso",
+      "Integración con Knowledge base para sugerir acciones",
+      "Panel de agente con resumen visible antes de tomar el caso"
+    ],
+    complexity: 1,
+    msgs: [
+      {f:"system", t:"📋 Caso #C-4521 escalado a Lucía García — generando resumen automático"},
+      {f:"bot",  t:"<b>RESUMEN DE CASO — Para uso del agente</b>"},
+      {f:"bot",  t:"👤 <b>Cliente:</b> Jorge Pérez | Nivel: Gold | LTV: $45.000/año\n📅 <b>Historial:</b> 3 reclamos en 6 meses (todos resueltos)\n⭐ <b>NPS:</b> 7 promedio\n\n<b>Motivo actual:</b> Demoras reiteradas en entregas (3er caso este mes)"},
+      {f:"bot",  t:"💡 <b>Acciones recomendadas:</b>\n\n1. Ofrecer delivery prioritario gratuito por 3 meses\n2. Acreditar $500 de goodwill por reiteración\n3. Escalar a supervisor si no acepta la compensación"},
+      {f:"agent", t:"Perfecto, entiendo el contexto completo. Llamo al cliente ahora con todo preparado."},
+      {f:"system", t:"⏱️ Tiempo ahorrado en lectura de historial: ~4 minutos"}
+    ]
+  },
+
+  "4.4": {
+    name: "Clasificación y Ruteo Automático",
+    desc: "El agente clasifica automáticamente el caso por tipo, urgencia y habilidades requeridas, y lo asigna al agente humano más adecuado disponible. Reduce el tiempo de primera respuesta en 40%.",
+    trigger: "Nuevo caso entrante en cualquier canal",
+    channel: ["Web","App","WhatsApp","Voz","Email"],
+    poweredBy: [
+      {label:"Einstein Classification", color:"#6B1735"},
+      {label:"Service Cloud", color:"#032D60"}
+    ],
+    kpis: [
+      "Tiempo de primera respuesta (FRT) ↓ 40%",
+      "Tasa de asignación correcta ↑",
+      "Tasa de re-routing ↓",
+      "SLA cumplido ↑"
+    ],
+    deps: [
+      "Einstein Classification entrenado con histórico de casos COTO",
+      "Matriz de habilidades de agentes configurada en Service Cloud",
+      "Reglas de urgencia por tipo de cliente (Gold, Silver, Standard)",
+      "Cola de desbordamiento para picos de demanda",
+      "Dashboard de SLA en tiempo real para supervisores"
+    ],
+    complexity: 2,
+    msgs: [
+      {f:"system", t:"📥 Nuevo caso entrante — analizando con Einstein Classification"},
+      {f:"bot",  t:"<b>CLASIFICACIÓN AUTOMÁTICA</b>"},
+      {f:"bot",  t:"📌 <b>Tipo:</b> Reclamo — Producto defectuoso\n🔴 <b>Urgencia:</b> Alta (cliente Gold, 3er reclamo)\n🛠️ <b>Habilidades requeridas:</b> Devoluciones + Logística"},
+      {f:"bot",  t:"🔍 Buscando agente disponible con perfil matching..."},
+      {f:"bot",  t:"✅ <b>Asignado a:</b> María García\n👤 Especialista en devoluciones — disponible ahora\n⏱️ <b>Tiempo de asignación:</b> 9 segundos (vs. 4 min manual)"},
+      {f:"agent", t:"Caso recibido. Tomando contacto con el cliente ahora."},
+      {f:"system", t:"📊 SLA: Caso dentro del umbral de 2hs para clientes Gold ✅"}
+    ]
+  },
+
+  "4.5": {
+    name: "Base de Conocimiento Agéntica",
+    desc: "Copiloto para el equipo de servicio: el agente sugiere artículos de Knowledge, respuestas predefinidas y acciones recomendadas basándose en el contexto del caso en tiempo real.",
+    trigger: "Agente humano busca respuesta durante una interacción",
+    channel: ["Service Cloud (interno)"],
+    poweredBy: [
+      {label:"Agentforce Einstein Copilot", color:"#E3001B"},
+      {label:"Service Cloud", color:"#032D60"}
+    ],
+    kpis: [
+      "AHT ↓",
+      "Tasa de uso de Knowledge ↑",
+      "Calidad de respuesta (CSAT) ↑",
+      "Tiempo de capacitación de nuevos agentes ↓"
+    ],
+    deps: [
+      "Knowledge base actualizada con políticas y procedimientos",
+      "Agentforce Einstein Copilot integrado en consola del agente",
+      "Contexto del caso en tiempo real disponible para el copiloto",
+      "Feedback loop para mejorar sugerencias con casos resueltos",
+      "Permisos de acceso por rol de agente"
+    ],
+    complexity: 1,
+    msgs: [
+      {f:"system", t:"💼 Agente: Tomás R. — atendiendo caso de devolución de electrónica"},
+      {f:"agent", t:"El cliente quiere devolver una Smart TV de 55\" comprada hace 28 días. ¿Cuál es la política?"},
+      {f:"bot",  t:"💡 <b>Sugerencia del copiloto:</b>\n\nArtículo relevante: <i>Política de devoluciones — Electrónica y grandes electrodomésticos</i>"},
+      {f:"bot",  t:"📋 <b>Resumen:</b> Devolución permitida hasta <b>30 días</b> con embalaje original y ticket de compra. Para Smart TVs, verificar que no tenga daño físico ni uso excesivo."},
+      {f:"bot",  t:"✍️ <b>Respuesta sugerida para el cliente:</b>\n\n\"Su TV tiene 28 días de compra, está dentro del plazo. Necesitamos caja original y ticket. ¿Los tiene disponibles?\""},
+      {f:"agent", t:"Perfecto, uso esa respuesta. Me ahorró buscar en el manual."},
+      {f:"system", t:"⏱️ Tiempo de búsqueda ahorrado: ~3 minutos"}
+    ]
+  },
+
+  "4.6": {
+    name: "Seguimiento Proactivo de Entrega",
+    desc: "Si se detecta una demora en la entrega, el agente notifica proactivamente al cliente antes de que reclame, ofrece un crédito de compensación y evita que se genere un caso de soporte.",
+    trigger: "Demora detectada en pedido en camino",
+    channel: ["WhatsApp","Email","Push"],
+    poweredBy: [
+      {label:"Agentforce", color:"#E3001B"},
+      {label:"Data Cloud", color:"#032D60"},
+      {label:"Journey Decisioning", color:"#D4820A"}
+    ],
+    kpis: [
+      "Casos generados por demora ↓",
+      "Tasa de reclamos proactivos evitados ↑",
+      "NPS logístico ↑",
+      "Costo de compensación ↓"
+    ],
+    deps: [
+      "Integración en tiempo real con sistema logístico y tracking de pedidos",
+      "Umbral de demora configurado para activar notificación proactiva",
+      "Journey Decisioning para orquestar comunicación antes del reclamo",
+      "Autorización para emitir créditos de compensación automáticos",
+      "Segmentación por valor de cliente para calibrar compensación"
+    ],
+    complexity: 2,
+    msgs: [
+      {f:"system", t:"⚠️ Pedido #89234 de Valentina — demora de 2hs detectada en depósito"},
+      {f:"bot",  t:"¡Hola Valentina! Te escribimos antes de que nos preguntes 👋"},
+      {f:"bot",  t:"Tu pedido <b>#89234</b> tiene una demora imprevista de <b>2 horas</b> por un inconveniente en nuestro depósito de Palermo.\n\nLlegará hoy <b>entre 18–20hs</b> en lugar de 16–18hs. 😔"},
+      {f:"bot",  t:"Por las molestias, te acreditamos <b>$300 automáticamente</b> en tu cuenta COTO Club 🎁\nYa están disponibles para usar."},
+      {f:"user", t:"Ok, gracias por avisarme antes. Lo esperamos"},
+      {f:"bot",  t:"¡Gracias por tu comprensión, Valentina! Tu pedido llega esta noche sí o sí 💪\n\n¿Querés que te mande una notificación cuando el repartidor salga hacia tu casa?"},
+      {f:"user", t:"Sí, perfecto"},
+      {f:"bot",  t:"🔔 Activado. Te avisamos cuando esté en camino. ¡Hasta ahora!"}
+    ]
+  },
+
+  /* ─── CATEGORÍA 5: WHATSAPP, VOZ Y CANALES ─── */
+
+  "5.1": {
+    name: "Agente de Voz para Contact Center",
+    desc: "El agente de voz resuelve las consultas más frecuentes (WIMO, horarios, cambio de entrega, saldo de puntos) sin intervención humana, con entonación natural y comprensión de intención. Meta: 40% de contención.",
+    trigger: "Llamada entrante al 0800 de COTO",
+    channel: ["Voz","IVR"],
+    poweredBy: [
+      {label:"Agentforce Voice", color:"#0D8A65"},
+      {label:"Einstein Speech", color:"#E3001B"}
+    ],
+    kpis: [
+      "Tasa de contención de voz ↑ (meta: 40%)",
+      "Volumen de llamadas transferidas a humanos ↓",
+      "Costo por llamada ↓",
+      "CSAT post-IVR ↑"
+    ],
+    deps: [
+      "Agentforce Voice con NLU entrenado en español rioplatense",
+      "Identificación de cliente por número entrante o DNI por voz",
+      "Integración con Service Cloud y sistema logístico",
+      "Entonación natural configurada (no robótica)",
+      "Umbrales de escalado a agente humano definidos"
+    ],
+    complexity: 3,
+    msgs: [
+      {f:"system", t:"📞 Llamada entrante — 011-XXXX-4521 → identificado: Gustavo Fernández"},
+      {f:"bot",  t:"Bienvenido a COTO, Gustavo 😊 Soy tu asistente de voz. ¿En qué puedo ayudarte hoy?"},
+      {f:"user", t:"Quiero saber el estado de mi entrega de ayer"},
+      {f:"bot",  t:"Verificando tu pedido... Tu pedido <b>#34521</b> fue entregado ayer a las 16:42hs y fue firmado en recepción. ¿Es eso lo que buscabas?"},
+      {f:"user", t:"No, yo no lo recibí. Firmó otra persona sin avisarme"},
+      {f:"bot",  t:"Entiendo, Gustavo. Eso es un inconveniente importante. Voy a crear un caso de investigación ahora mismo y te paso con un especialista que puede resolverlo hoy."},
+      {f:"user", t:"Bueno, gracias"},
+      {f:"bot",  t:"Te transfiero ahora. Espera un momento, por favor. El especialista ya tiene todo el contexto de tu caso 🤝"}
+    ]
+  },
+
+  "5.2": {
+    name: "WhatsApp Commerce — Compra Conversacional",
+    desc: "El cliente puede hacer su compra completa por WhatsApp: buscar productos, agregar al carrito, pagar y programar la entrega — todo dentro de la conversación, sin salir de la app.",
+    trigger: "Cliente inicia conversación en WhatsApp Business",
+    channel: ["WhatsApp"],
+    poweredBy: [
+      {label:"Agentforce", color:"#0D8A65"},
+      {label:"Two-Way Messaging", color:"#128C7E"},
+      {label:"Commerce Cloud", color:"#D4820A"}
+    ],
+    kpis: [
+      "Órdenes completadas por WhatsApp ↑",
+      "Ticket promedio conversacional ↑",
+      "Tasa de abandono en flujo de compra ↓",
+      "GMV canal WhatsApp ↑"
+    ],
+    deps: [
+      "WhatsApp Business API aprobada con número COTO verificado",
+      "Commerce Cloud con catálogo de productos conectado",
+      "Pasarela de pago integrada en el flujo conversacional",
+      "Agentforce con acceso al perfil y carrito del cliente",
+      "Templates de mensajes aprobados por Meta"
+    ],
+    complexity: 3,
+    msgs: [
+      {f:"user", t:"Hola! Quiero hacer mi pedido semanal"},
+      {f:"bot",  t:"¡Hola Marcela! 👋 Con gusto te ayudo con tu pedido.\n\nBasado en tus compras anteriores, te sugiero:\n\n🥛 Leche La Serenísima x6 — $2.100\n🍞 Pan Bimbo Lactal — $890\n🧴 Shampoo Sedal — $1.450\n\n¿Arrancamos con esto?"},
+      {f:"user", t:"Sí, y agregá papel higiénico Higienol x4"},
+      {f:"bot",  t:"✅ Agregado! Resumen del pedido:\n\n• Leche Serenísima x6\n• Pan Bimbo Lactal\n• Shampoo Sedal\n• Higienol x4\n\n<b>Total: $5.890</b> 🛒\n\n¿Pagás con tu Visa terminada en 4521?"},
+      {f:"user", t:"Sí, con esa"},
+      {f:"bot",  t:"💳 Procesando pago..."},
+      {f:"bot",  t:"✅ <b>Pedido #99234 confirmado</b> 🎉\nPago procesado. Entrega <b>mañana 10–14hs</b>.\n\n¡Listo, Marcela! Sin abrir ninguna app."}
+    ]
+  },
+
+  "5.3": {
+    name: "Agente de Voz Outbound para Campañas",
+    desc: "El agente realiza llamadas salientes personalizadas para re-engagement o ventas. El cliente recibe una llamada con oferta personalizada y puede confirmar la compra por voz o ser derivado a un humano.",
+    trigger: "Segmento de clientes inactivos o de alta propensión",
+    channel: ["Voz outbound"],
+    poweredBy: [
+      {label:"Agentforce Voice", color:"#0D8A65"},
+      {label:"Einstein Scoring", color:"#6B1735"},
+      {label:"Journey Decisioning", color:"#D4820A"}
+    ],
+    kpis: [
+      "Tasa de contacto efectivo ↑",
+      "Tasa de conversión outbound ↑",
+      "Revenue atribuido a campañas de voz ↑",
+      "Tasa de opt-out ↓"
+    ],
+    deps: [
+      "Einstein Scoring con segmento de alta propensión definido",
+      "Agentforce Voice con scripts personalizados por segmento",
+      "Identificación del producto favorito por cliente (Data Cloud)",
+      "Opt-out list actualizada para cumplir regulaciones",
+      "Horarios de llamada configurados (no molestar)"
+    ],
+    complexity: 3,
+    msgs: [
+      {f:"system", t:"📞 Llamada outbound — Adriana López — 45 días inactiva — propensión: Alta"},
+      {f:"bot",  t:"¡Hola Adriana! Te llamo de COTO. Tengo una oferta que creo que te va a interesar, ¿tenés un minuto?"},
+      {f:"user", t:"Sí, decime"},
+      {f:"bot",  t:"Vimos que hace un tiempo que no comprás, y esta semana los productos que más te gustan están con descuento especial:\n\n✅ Activia todos los sabores — <b>25% OFF</b>\n✅ Leche La Serenísima — <b>20% OFF</b>\n✅ Aceite Cocinero — <b>15% OFF</b>"},
+      {f:"user", t:"¿Solo online o también en sucursal?"},
+      {f:"bot",  t:"¡En ambos! Y si comprás online hoy, te armamos el pedido ahora mismo por teléfono o te mando el link con el carrito pre-cargado por WhatsApp. ¿Cuál preferís?"},
+      {f:"user", t:"Mandame el link por WhatsApp"},
+      {f:"bot",  t:"✅ Perfecto. Te mando el link ahora mismo. ¡Gracias Adriana, que aproveches! 😊"}
+    ]
+  },
+
+  "5.4": {
+    name: "WhatsApp para Resolución de Reclamos con Foto",
+    desc: "El cliente envía una foto del producto defectuoso. El agente analiza la imagen con IA, valida el reclamo y genera el reembolso o reposición automáticamente en menos de 2 minutos.",
+    trigger: "Cliente envía foto de producto dañado por WhatsApp",
+    channel: ["WhatsApp"],
+    poweredBy: [
+      {label:"Agentforce", color:"#0D8A65"},
+      {label:"Einstein Vision", color:"#0D8A65"},
+      {label:"Service Cloud", color:"#032D60"}
+    ],
+    kpis: [
+      "Tiempo de resolución de reclamos ↓ (meta: 2 min)",
+      "Costo por reclamo resuelto ↓",
+      "Tasa de fraude detectado ↑",
+      "CSAT post-reclamo ↑"
+    ],
+    deps: [
+      "Einstein Vision entrenado para detectar productos dañados/vencidos",
+      "Integración con historial de compras para validar el producto",
+      "Umbral de confianza de IA para resolución automática vs. revisión humana",
+      "Autorización para reembolsos automáticos hasta cierto monto",
+      "WhatsApp Business API con soporte para recepción de imágenes"
+    ],
+    complexity: 3,
+    msgs: [
+      {f:"user", t:"[📸 Foto adjunta] Me llegó el queso con moho"},
+      {f:"bot",  t:"Recibimos tu foto 📸 Analizando con inteligencia artificial..."},
+      {f:"system", t:"🔍 Einstein Vision: daño confirmado con 94% de confianza"},
+      {f:"bot",  t:"✅ Reclamo validado automáticamente.\n\n<b>Producto identificado:</b> Queso Cremoso Ilolay 400g\n<b>Compra:</b> 15/06 — $1.890\n<b>Motivo:</b> Producto en mal estado confirmado por IA"},
+      {f:"bot",  t:"Procesando reembolso..."},
+      {f:"bot",  t:"✅ <b>$1.890 acreditados</b> en tu cuenta COTO Club 🚀\n\nTiempo de resolución: <b>menos de 2 minutos</b>.\nLamentamos el inconveniente, esto no debería pasar."},
+      {f:"user", t:"Increíble la velocidad, muchas gracias!"},
+      {f:"bot",  t:"¡Gracias a vos por avisarnos! El feedback ayuda a mejorar nuestros controles de calidad 💙"}
+    ]
+  },
+
+  "5.5": {
+    name: "Confirmación y Cambio de Turno de Entrega",
+    desc: "El agente envía por WhatsApp la confirmación del turno de entrega con opción de reprogramar. El cliente reprograma con un solo mensaje, sin llamar al call center.",
+    trigger: "24hs antes de la entrega programada",
+    channel: ["WhatsApp"],
+    poweredBy: [
+      {label:"Agentforce", color:"#0D8A65"},
+      {label:"Two-Way Messaging", color:"#128C7E"}
+    ],
+    kpis: [
+      "Intentos de entrega fallidos ↓",
+      "Llamadas evitadas al CC por cambio de turno ↓",
+      "Costo logístico por re-entrega ↓",
+      "Tasa de confirmación de turnos ↑"
+    ],
+    deps: [
+      "Sistema logístico con turnos de entrega accesible en tiempo real",
+      "WhatsApp Business API con Two-Way Messaging activo",
+      "Ventanas de reprogramación disponibles conectadas a capacidad logística",
+      "Journey de confirmación disparado automáticamente 24hs antes",
+      "Integración con sistema de rutas para reasignación dinámica"
+    ],
+    complexity: 1,
+    msgs: [
+      {f:"bot",  t:"¡Hola Patricia! 📦 Te escribimos de COTO."},
+      {f:"bot",  t:"Mañana tenés programada una entrega entre <b>14–18hs</b>.\n\n¿Confirmás que vas a estar disponible en ese horario?"},
+      {f:"user", t:"No puedo a esa hora, ¿puede ser por la mañana?"},
+      {f:"bot",  t:"¡Claro! Opciones disponibles para mañana:\n\n⏰ <b>9–13hs</b> ✅\n⏰ <b>10–14hs</b> ✅\n\n¿Cuál te viene mejor?"},
+      {f:"user", t:"9 a 13"},
+      {f:"bot",  t:"✅ Turno actualizado a mañana <b>9–13hs</b>.\n\nTe mandamos confirmación y te avisamos cuando el repartidor salga. ¡Hasta mañana! 🚚"}
+    ]
+  },
+
+  "5.6": {
+    name: "Programa de Lealtad por Voz",
+    desc: "El agente de voz informa el saldo de puntos, beneficios disponibles y próximas fechas de vencimiento, e impulsa el canje en el mismo momento de la llamada.",
+    trigger: "Cliente llama para consultar puntos o beneficios",
+    channel: ["Voz"],
+    poweredBy: [
+      {label:"Agentforce Voice", color:"#0D8A65"},
+      {label:"Data Cloud", color:"#032D60"}
+    ],
+    kpis: [
+      "Tasa de canje de puntos por canal de voz ↑",
+      "Llamadas resueltas sin agente humano ↑",
+      "Puntos redimidos por período ↑"
+    ],
+    deps: [
+      "Agentforce Voice con acceso al motor de puntos COTO Club",
+      "Identificación del cliente por número de teléfono",
+      "Catálogo de beneficios canjeables en tiempo real",
+      "Flujo de confirmación de canje por voz",
+      "Integración con sistema de lealtad para actualización inmediata"
+    ],
+    complexity: 2,
+    msgs: [
+      {f:"system", t:"📞 Llamada entrante — identificado: Ernesto Vila — COTO Club Gold"},
+      {f:"bot",  t:"¡Hola Ernesto! Bienvenido a COTO. ¿En qué puedo ayudarte?"},
+      {f:"user", t:"Quiero saber cuántos puntos tengo"},
+      {f:"bot",  t:"Claro. Tu saldo actual es de <b>4.580 puntos COTO Club</b> 🌟\n\nEquivalen a <b>$916 de descuento</b> disponibles para usar hoy."},
+      {f:"user", t:"¿Cuánto me falta para pasar al siguiente nivel?"},
+      {f:"bot",  t:"Estás en nivel <b>Gold</b>. Para pasar a <b>Platinum</b> te faltan <b>1.420 puntos</b>, equivalente a una compra de <b>$7.100</b>."},
+      {f:"user", t:"¿Y qué beneficios tiene Platinum?"},
+      {f:"bot",  t:"Con Platinum tenés:\n\n🚚 Envíos gratis ilimitados\n🎁 8% extra en todas las compras\n⚡ Atención prioritaria 24/7\n🎂 Doble puntos en tu cumpleaños\n\n¿Querés que te arme un pedido para llegar esta semana?"}
+    ]
+  },
+
+  /* ─── CATEGORÍA 6: EMPLOYEE AGENTS ─── */
+
+  "6.1": {
+    name: "Copiloto para Cajeros y Personal de Piso",
+    desc: "El empleado consulta stock en tiempo real, ubicación de productos, precios actualizados y promociones vigentes desde un dispositivo handheld. Reduce interrupciones y mejora la experiencia del cliente en piso.",
+    trigger: "Empleado consulta desde dispositivo handheld en tienda",
+    channel: ["App interna","Handheld"],
+    poweredBy: [
+      {label:"Agentforce Employee Agent", color:"#6B1735"},
+      {label:"Data Cloud", color:"#032D60"}
+    ],
+    kpis: [
+      "Tiempo de atención al cliente en piso ↓",
+      "Consultas a supervisores reducidas ↓",
+      "CSAT en tienda ↑",
+      "Ventas perdidas por falta de información ↓"
+    ],
+    deps: [
+      "App interna con Agentforce Employee Agent integrado",
+      "Stock en tiempo real por sucursal conectado a Data Cloud",
+      "Catálogo de precios y promociones actualizado en tiempo real",
+      "Dispositivos handheld o smartphones corporativos para el personal",
+      "Permisos de acceso diferenciados por rol (cajero, reponedor, supervisor)"
+    ],
+    complexity: 1,
+    msgs: [
+      {f:"agent", t:"¿Hay stock de Coca Cola 2.25L en el depósito?"},
+      {f:"bot",  t:"📦 <b>Stock actual — Coca Cola 2.25L:</b>\n\n🏪 Góndola (Pasillo 7, Estante 3): <b>12 unidades</b>\n📦 Depósito Planta Baja: <b>48 unidades</b>\n⏱️ Último reabastecimiento: hace 2hs"},
+      {f:"agent", t:"¿Y el precio esta semana?"},
+      {f:"bot",  t:"💲 <b>Precio Coca Cola 2.25L:</b>\n\n• Precio regular: <b>$890</b>\n• Promoción activa: <b>20% OFF</b> → <b>$712</b>\n• Vigencia: hasta el domingo 22/06"},
+      {f:"agent", t:"Un cliente pregunta si tienen el mismo descuento en Sprite"},
+      {f:"bot",  t:"✅ <b>Sprite 2.25L</b> también tiene 20% OFF esta semana → <b>$650</b>\nStock en góndola: 8 unidades. Stock en depósito: 24 unidades."},
+      {f:"agent", t:"Perfecto, gracias"},
+      {f:"bot",  t:"¡De nada! Cualquier consulta, acá estoy 💪"}
+    ]
+  },
+
+  "6.2": {
+    name: "Agente de Onboarding de Nuevos Empleados",
+    desc: "El agente guía al nuevo empleado por todos los pasos del onboarding: documentación, capacitaciones, políticas de la empresa y primeras tareas, disponible 24/7 por WhatsApp o la app interna.",
+    trigger: "Alta de nuevo colaborador en el sistema de RRHH",
+    channel: ["WhatsApp","App interna"],
+    poweredBy: [
+      {label:"Agentforce Employee Agent", color:"#6B1735"},
+      {label:"Slack AI", color:"#4A154B"}
+    ],
+    kpis: [
+      "Time-to-productivity ↓",
+      "Carga operativa del equipo de RRHH ↓",
+      "Tasa de completitud del onboarding ↑",
+      "Satisfacción del nuevo ingreso ↑"
+    ],
+    deps: [
+      "Proceso de onboarding digitalizado y cargado en Agentforce",
+      "Integración con sistema de RRHH para detección de nuevo ingreso",
+      "Documentos y formularios disponibles como links en el flujo",
+      "Calendario de capacitaciones conectado al agente",
+      "Slack AI para canales internos de comunicación del equipo"
+    ],
+    complexity: 2,
+    msgs: [
+      {f:"system", t:"🆕 Nuevo empleado registrado: Camila Torres — Legajo #4521 — Sucursal Palermo"},
+      {f:"bot",  t:"¡Bienvenida a COTO, Camila! 🎉 Soy tu asistente de onboarding, disponible 24/7."},
+      {f:"bot",  t:"Tu plan para <b>hoy:</b>\n\n✅ Completar formulario AFIP (link enviado por email)\n⏳ Capacitación de seguridad — 10hs, Sala B\n⏳ Tour virtual de la sucursal\n⏳ Reunión con tu supervisor Roberto — 14hs"},
+      {f:"agent", t:"¿Dónde busco el uniforme?"},
+      {f:"bot",  t:"El uniforme lo retirás en <b>Recursos Humanos, Planta Baja</b>, presentando tu legajo <b>#4521</b>.\n\nHorario de atención: lunes a viernes 8–17hs. Hoy podés ir antes de las 10hs 👕"},
+      {f:"agent", t:"¿Cuándo me dan acceso al sistema de caja?"},
+      {f:"bot",  t:"El acceso al sistema se activa después de completar la <b>capacitación de caja</b> (mañana a las 9hs, 2hs de duración).\n\nTu supervisor Roberto te acompañará las primeras 2 horas en caja. ¡No te preocupes, vas a estar muy bien! 💪"}
+    ]
+  },
+
+  "6.3": {
+    name: "Asistente para Supervisores de Sucursal",
+    desc: "El agente genera automáticamente el resumen del día anterior (ventas, incidencias, stock crítico, reclamos) y el briefing del turno actual para el supervisor, ahorrando 30 min de gestión manual.",
+    trigger: "Apertura de turno o solicitud de reporte diario",
+    channel: ["App interna","WhatsApp"],
+    poweredBy: [
+      {label:"Agentforce", color:"#6B1735"},
+      {label:"Data Cloud", color:"#032D60"},
+      {label:"Service Cloud", color:"#E3001B"}
+    ],
+    kpis: [
+      "Tiempo de gestión administrativa por turno ↓ 30 min",
+      "Velocidad de detección de incidencias ↑",
+      "Ventas por turno ↑",
+      "Cumplimiento de tareas operativas ↑"
+    ],
+    deps: [
+      "Integración con sistema de ventas y POS de la sucursal",
+      "Service Cloud con reclamos e incidencias de la sucursal",
+      "Data Cloud con métricas de inventario y stock crítico",
+      "Agendas y tareas del turno configuradas en el sistema",
+      "Acceso diferenciado por sucursal para privacidad de datos"
+    ],
+    complexity: 2,
+    msgs: [
+      {f:"system", t:"🌅 Roberto García — Supervisor Sucursal Palermo — abre la app 8:02hs"},
+      {f:"bot",  t:"¡Buenos días, Roberto! ☀️ Resumen del turno anterior:"},
+      {f:"bot",  t:"📊 <b>Ventas ayer:</b> $245.800 (+8% vs. semana pasada) ✅\n⚠️ <b>Reclamos:</b> 3 (1 pendiente de resolución)\n📦 <b>Stock crítico:</b> Aceite Cocinero (2 unidades), Pan Bimbo (agotado)\n🏆 <b>Top venta:</b> Gaseosas (+23% por calor)"},
+      {f:"bot",  t:"📋 <b>Para el turno de hoy:</b>\n\n• Carga de camión de reposición: <b>11hs</b>\n• Auditoría de caja: <b>15hs</b>\n• Capacitación Camila Torres (nueva): <b>9hs</b>"},
+      {f:"agent", t:"¿Cuál es el reclamo pendiente?"},
+      {f:"bot",  t:"Caso <b>#C-4891</b> — Cliente Jorge P. — Demora reiterada en entregas (3er reclamo).\nRecomendación: Compensación + delivery prioritario. ¿Lo tomás vos o lo escalás a atención al cliente?"},
+      {f:"agent", t:"Lo escalo a atención al cliente"},
+      {f:"bot",  t:"✅ Caso redirigido al equipo de atención. Te notifico cuando esté resuelto."}
+    ]
+  },
+
+  "6.4": {
+    name: "Gestión de Inventario Predictiva",
+    desc: "El agente detecta proactivamente productos con riesgo de quiebre de stock, genera la orden de reposición recomendada y alerta al responsable de compras con la información necesaria para tomar la decisión.",
+    trigger: "Análisis continuo de stock en tiempo real",
+    channel: ["App interna","Dashboard operativo"],
+    poweredBy: [
+      {label:"Agentforce", color:"#6B1735"},
+      {label:"Einstein", color:"#E3001B"},
+      {label:"Data Cloud", color:"#032D60"}
+    ],
+    kpis: [
+      "Tasa de quiebre de stock (out-of-stock) ↓",
+      "Nivel de inventario óptimo ↑",
+      "Ventas perdidas por falta de stock ↓",
+      "Costo de sobre-stock ↓"
+    ],
+    deps: [
+      "Sensores o sistema de inventario en tiempo real por producto",
+      "Modelo predictivo de demanda entrenado con estacionalidad COTO",
+      "Integración con sistema de pedidos a proveedores",
+      "Alertas configuradas por umbral de stock mínimo por SKU",
+      "Datos históricos de ventas por sucursal y día de la semana"
+    ],
+    complexity: 3,
+    msgs: [
+      {f:"system", t:"⚠️ Alerta predictiva generada — 14:23hs — Sucursal Flores"},
+      {f:"bot",  t:"⚠️ <b>Alerta de stock crítico detectada:</b>"},
+      {f:"bot",  t:"📦 <b>Aceite Cocinero 1.5L</b>\nStock actual: 8 unidades\nVelocidad de venta: 12 unidades/día\n<b>Quiebre estimado: mañana a las 10hs</b> 🔴\n\n📦 <b>Leche La Serenísima x6</b>\nStock actual: 12 unidades\n<b>Quiebre estimado: pasado mañana</b> 🟡"},
+      {f:"bot",  t:"💡 <b>Orden de reposición sugerida:</b>\n\n• Aceite Cocinero 1.5L: <b>120 unidades</b>\n• Leche Serenísima x6: <b>80 packs</b>\n\nProveedor disponible. Llegada estimada: <b>mañana 8hs</b>"},
+      {f:"agent", t:"Confirmar orden de reposición"},
+      {f:"bot",  t:"✅ <b>Orden #ORD-789 enviada</b> al proveedor.\nConfirmación recibida. Llegada: mañana <b>8–10hs</b>.\n\n¿Querés que avise al equipo de recepción para que estén preparados?"},
+      {f:"agent", t:"Sí, avisales"},
+      {f:"bot",  t:"✅ Notificación enviada al equipo de recepción de Flores. ¡Todo coordinado!"}
+    ]
+  },
+
+  "6.5": {
+    name: "Copiloto para Equipo de Marketing",
+    desc: "El agente ayuda al equipo de marketing a crear segmentos, revisar performance de campañas previas y generar borradores de mensajes personalizados para cada canal, acelerando el tiempo de lanzamiento en 60%.",
+    trigger: "Lanzamiento de campaña o análisis de performance",
+    channel: ["App interna","Marketing Cloud"],
+    poweredBy: [
+      {label:"Agentforce", color:"#6B1735"},
+      {label:"Data Cloud", color:"#032D60"},
+      {label:"Marketing Cloud", color:"#D4820A"}
+    ],
+    kpis: [
+      "Time-to-launch de campañas ↓ 60%",
+      "Horas de trabajo manual en segmentación ↓",
+      "ROI de campañas ↑",
+      "Costo por impacto ↓"
+    ],
+    deps: [
+      "Data Cloud con segmentos de audiencia actualizados",
+      "Historial de performance de campañas anteriores",
+      "Marketing Cloud con templates de mensajes activos",
+      "Agentforce con acceso a herramientas de segmentación",
+      "Aprobación de compliance para mensajes generados por IA"
+    ],
+    complexity: 2,
+    msgs: [
+      {f:"agent", t:"Necesito armar una campaña de invierno para la semana que viene"},
+      {f:"bot",  t:"¡Perfecto! Analizando tu base de clientes para invierno... 🔄"},
+      {f:"bot",  t:"📊 <b>Segmentos detectados para campaña de invierno:</b>\n\n🍲 <b>Foodies del frío</b>: 45.200 clientes (sopas, guisos, especias)\n☕ <b>Bebidas calientes</b>: 38.900 clientes (café, té, mate)\n🥩 <b>Asadores de invierno</b>: 22.100 clientes (carnes, carbón)\n\n¿Con cuál arrancamos?"},
+      {f:"agent", t:"Con Foodies del frío"},
+      {f:"bot",  t:"✍️ <b>Borrador de mensaje para Foodies del frío:</b>\n\n\"Este invierno, cociná rico con hasta <b>25% OFF</b> en legumbres, sopas, especias y caldos 🍲 Solo por esta semana en COTO.\"\n\n📱 Canal sugerido: WhatsApp + Push (mayor apertura en este segmento)\n📅 Mejor horario de envío: miércoles 18hs"},
+      {f:"agent", t:"Perfecto, lo apruebo. ¿Podés programarlo?"},
+      {f:"bot",  t:"✅ <b>Campaña programada</b> para el miércoles a las 18hs.\n45.200 destinatarios. Estimado de conversión basado en campañas similares: <b>12–15%</b> 🎯"}
+    ]
+  },
+
+  "6.6": {
+    name: "HR Self-Service Agent",
+    desc: "El empleado resuelve consultas de RRHH por WhatsApp o app interna sin necesidad de contactar al equipo de HR. Disponible 24/7, reduce la carga operativa del equipo de personas en un 40%.",
+    trigger: "Empleado consulta sobre liquidación, vacaciones o turnos",
+    channel: ["WhatsApp","App interna"],
+    poweredBy: [
+      {label:"Agentforce Employee Agent", color:"#6B1735"},
+      {label:"Slack", color:"#4A154B"}
+    ],
+    kpis: [
+      "Consultas atendidas por el agente vs. por RRHH ↑",
+      "Tiempo de respuesta a consultas de empleados ↓",
+      "Carga operativa del equipo de RRHH ↓ 40%",
+      "Satisfacción del empleado (eNPS) ↑"
+    ],
+    deps: [
+      "Sistema de RRHH integrado con Agentforce (nómina, vacaciones, turnos)",
+      "Políticas de RRHH cargadas en la base de conocimiento del agente",
+      "Flujo de aprobación de vacaciones conectado al supervisor",
+      "Permisos de privacidad: cada empleado solo ve sus propios datos",
+      "Escalado a equipo de RRHH para casos que requieren intervención humana"
+    ],
+    complexity: 2,
+    msgs: [
+      {f:"agent", t:"¿Cuántos días de vacaciones me quedan este año?"},
+      {f:"bot",  t:"¡Hola Claudia! 🌴 Consultando tu legajo <b>#3421</b>..."},
+      {f:"bot",  t:"📅 <b>Vacaciones 2026:</b>\n\nDías totales: <b>18 días</b>\nDías tomados: <b>6 días</b> (enero)\n<b>Días disponibles: 12 días</b>\n\nPróximo período disponible: desde el <b>1 de julio</b>"},
+      {f:"agent", t:"¿Puedo pedir vacaciones del 14 al 25 de julio?"},
+      {f:"bot",  t:"Verificando disponibilidad del equipo en esas fechas... 🔍"},
+      {f:"bot",  t:"✅ Fechas disponibles. En tu área hay cobertura suficiente en ese período.\n\n¿Envío la solicitud a <b>Roberto García</b> (tu supervisor) para aprobación?"},
+      {f:"agent", t:"Sí, mandala"},
+      {f:"bot",  t:"✅ <b>Solicitud enviada</b> a Roberto García.\nRespuesta estimada: <b>24–48hs</b>. Te notifico cuando apruebe 🎉\n\n¿Necesitás algo más?"}
+    ]
+  },
+
+  "3.6": {
+    name: "Programa de Fidelización Proactivo",
+    desc: "El agente notifica proactivamente sobre puntos a vencer, beneficios disponibles no utilizados y cuánto le falta para subir de categoría. Reduce la tasa de abandono del programa de lealtad.",
+    trigger: "Puntos próximos a vencer o nivel de cliente por subir",
+    channel: ["App","WhatsApp"],
+    poweredBy: [
+      {label:"Agentforce", color:"#E3001B"},
+      {label:"Data Cloud", color:"#032D60"},
+      {label:"Journey Decisioning", color:"#D4820A"}
+    ],
+    kpis: [
+      "Tasa de canje de puntos ↑",
+      "Abandono del programa ↓",
+      "LTV de miembros activos ↑",
+      "Frecuencia de compra en socios ↑"
+    ],
+    deps: [
+      "Motor de puntos COTO Club integrado con Data Cloud",
+      "Reglas de vencimiento de puntos configuradas",
+      "Journey disparado X días antes del vencimiento",
+      "Catálogo de beneficios canjeables actualizado",
+      "Lógica de gamificación para progresión de niveles"
+    ],
+    complexity: 1,
+    msgs: [
+      {f:"bot",  t:"¡Hola Sandra! 🌟 Tenemos novedades de tu cuenta COTO Club."},
+      {f:"bot",  t:"⚠️ Tenés <b>2.340 puntos a vencer el 30 de junio</b> (en 13 días).\n\nEquivalen a <b>$468 de descuento</b> que perderías si no los usás."},
+      {f:"user", t:"¿Cómo los puedo canjear?"},
+      {f:"bot",  t:"Tenés 3 opciones:\n\n🛍️ <b>$468 de descuento</b> en tu próxima compra\n🎁 <b>Canasta Gourmet</b> valorada en $600 (mejor valor)\n📦 <b>Envío gratis</b> por 3 meses\n\n¿Cuál preferís?"},
+      {f:"user", t:"La canasta gourmet, mejor valor"},
+      {f:"bot",  t:"¡Excelente elección! 🎁 Canasta Gourmet reservada.\nPasá a retirarla por cualquier sucursal COTO con tu DNI antes del <b>30/06</b>."},
+      {f:"bot",  t:"📊 Además, ¡te faltan solo <b>660 puntos</b> para pasar a nivel <b>Gold</b>!\nCon una compra de $3.300 esta semana llegás. ¿Arrancamos el pedido?"},
+      {f:"user", t:"Sí, armame algo"},
+      {f:"bot",  t:"✅ Armando tu pedido para llegar a Gold... ¡Ya casi sos parte de la élite COTO! 🥇"}
+    ]
+  }
+};
+
+/* ─── HELPERS ─── */
+let timers = [];
+
+function escHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function fmt(s){
+  return escHtml(s)
+    .replace(/\*\*(.*?)\*\*/g,'<b>$1</b>')
+    .replace(/<b>(.*?)<\/b>/g,'<b>$1</b>')  // keep existing <b>
+    .replace(/\n/g,'<br>');
+}
+function nowTime(){
+  const d=new Date();
+  return d.getHours()+':'+(d.getMinutes()<10?'0':'')+d.getMinutes();
+}
+
+/* ─── MODAL OPEN / CLOSE ─── */
+function openModal(ucid){
+  const uc = UC[ucid]; if(!uc) return;
+  timers.forEach(clearTimeout); timers=[];
+
+  // header
+  document.getElementById('m-badge').textContent = ucid;
+  document.getElementById('m-title').textContent = uc.name;
+  document.getElementById('m-trigger').textContent = '⚡ ' + uc.trigger;
+
+  // tech panel
+  const techColors = {
+    "Media":   {color:"#D4820A", pips:2},
+    "Alta":    {color:"#E3001B", pips:3},
+    "Baja":    {color:"#E07B1A", pips:1}
+  };
+  const cxLabel = uc.complexity===1?"Baja":uc.complexity===2?"Media":"Alta";
+  const cxColor = uc.complexity===1?"#E07B1A":uc.complexity===2?"#D4820A":"#E3001B";
+
+  document.getElementById('m-tech-panel').innerHTML = `
+    ${uc.desc ? `<div class="tech-section">
+      <div class="tech-label">📋 Descripción</div>
+      <p style="font-size:0.85rem;color:#374151;line-height:1.6;margin:0">${uc.desc}</p>
+    </div>` : ''}
+    <div class="tech-section">
+      <div class="tech-label">📡 Canales</div>
+      <div class="tech-badges">${uc.channel.map(c=>`<span class="tech-badge" style="--bc:#0176D3">${c}</span>`).join('')}</div>
+    </div>
+    <div class="tech-section">
+      <div class="tech-label">⚙️ Powered by</div>
+      <div class="tech-badges">${uc.poweredBy.map(p=>`<span class="tech-badge" style="--bc:${p.color}">${p.label}</span>`).join('')}</div>
+    </div>
+    <div class="tech-section">
+      <div class="tech-label">📊 KPIs impactados</div>
+      ${uc.kpis.map(k=>`<div class="kpi-item"><span class="kpi-dot"></span>${k}</div>`).join('')}
+    </div>
+    <div class="tech-section">
+      <div class="tech-label">🔧 Dependencias técnicas</div>
+      ${uc.deps.map(d=>`<div class="dep-item"><span class="dep-check">✓</span>${d}</div>`).join('')}
+    </div>
+    <div class="tech-section">
+      <div class="tech-label">🎯 Complejidad de implementación</div>
+      <div class="complexity-bar">
+        ${[1,2,3].map(i=>`<div class="complexity-pip${i<=uc.complexity?' active':''}" style="--ac:${cxColor}"></div>`).join('')}
+        <span class="complexity-label" style="--ac:${cxColor}">${cxLabel}</span>
+      </div>
+    </div>
+  `;
+
+  // clear chat
+  const chat = document.getElementById('wa-chat');
+  chat.innerHTML = '';
+  document.getElementById('wa-status').textContent = 'En línea';
+
+  // animate messages
+  let delay = 400;
+  uc.msgs.forEach((msg) => {
+    if(msg.f === 'bot' || msg.f === 'agent'){
+      const d = delay;
+      timers.push(setTimeout(()=>{
+        const typ = document.createElement('div');
+        typ.className='wa-typing'; typ.id='wa-typing';
+        typ.innerHTML='<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+        chat.appendChild(typ); chat.scrollTop=chat.scrollHeight;
+      }, d));
+      delay += 1000;
+      const d2 = delay;
+      timers.push(setTimeout(()=>{
+        const t = document.getElementById('wa-typing'); if(t) t.remove();
+        addBubble(chat, msg);
+        chat.scrollTop = chat.scrollHeight;
+      }, d2));
+      delay += 600;
+    } else {
+      const d = delay;
+      timers.push(setTimeout(()=>{
+        addBubble(chat, msg);
+        chat.scrollTop = chat.scrollHeight;
+      }, d));
+      delay += 900;
+    }
+  });
+
+  document.getElementById('uc-modal').style.display='flex';
+}
+
+function addBubble(chat, msg){
+  const el = document.createElement('div');
+  if(msg.f === 'system'){
+    el.className = 'wa-bubble system';
+    el.innerHTML = msg.t;
+  } else {
+    el.className = 'wa-bubble ' + msg.f;
+    let inner = '';
+    if(msg.f === 'agent') inner += `<div class="bubble-agent-name">Agente humano</div>`;
+    inner += `<div>${fmt(msg.t)}</div><div class="bubble-time">${nowTime()}${msg.f==='user'?' ✓✓':''}</div>`;
+    el.innerHTML = inner;
+  }
+  chat.appendChild(el);
+}
+
+function closeModal(){
+  timers.forEach(clearTimeout); timers=[];
+  document.getElementById('uc-modal').style.display='none';
+  document.getElementById('wa-chat').innerHTML='';
+}
+
+/* ─── DOUBLE CLICK BINDING ─── */
+document.querySelectorAll('.uc-interactive').forEach(li=>{
+  li.addEventListener('dblclick', ()=> openModal(li.dataset.ucid));
+});
+
+/* close on overlay click */
+document.getElementById('uc-modal').addEventListener('click', e=>{
+  if(e.target === document.getElementById('uc-modal')) closeModal();
+});
+
+/* close on Escape */
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+</script>
+
+</body>
+</html>
